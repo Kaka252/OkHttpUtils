@@ -7,3 +7,7 @@
 /build
 /captures
 .externalNativeBuild
+app/libs/
+app/src/main/res/drawable/
+okhttputils/libs/
+okhttputils/src/main/res/drawable/
