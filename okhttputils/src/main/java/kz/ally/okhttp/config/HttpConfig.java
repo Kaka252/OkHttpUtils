@@ -5,16 +5,13 @@ import android.content.Context;
 import java.io.File;
 import java.security.SecureRandom;
 import java.security.cert.X509Certificate;
-import java.util.concurrent.TimeUnit;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
-import kz.ally.okhttp.OkHttpSdk;
 import okhttp3.Cache;
-import okhttp3.OkHttpClient;
 
 /**
  * 作者：ZhouYou
@@ -63,19 +60,6 @@ public class HttpConfig {
 
     public HttpConfig() {
     }
-
-    public OkHttpClient init() {
-        OkHttpClient client = OkHttpSdk.getInstance().getClient();
-        client.newBuilder()
-                .writeTimeout(writeTimeout, TimeUnit.MILLISECONDS)
-                .readTimeout(readTimeout, TimeUnit.MILLISECONDS)
-                .connectTimeout(connectTimeout, TimeUnit.MILLISECONDS)
-                .sslSocketFactory(sslSocketFactory, x509TrustManager)
-                .build();
-        return client;
-    }
-
-
 
     public static SSLSocketFactory initInsecureSslSocketFactory(TrustManager trustManager) {
         try {
