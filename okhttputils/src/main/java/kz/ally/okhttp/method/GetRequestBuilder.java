@@ -1,7 +1,5 @@
 package kz.ally.okhttp.method;
 
-import java.util.Map;
-
 import kz.ally.okhttp.ApiRequestCall;
 import kz.ally.okhttp.config.Params;
 import kz.ally.okhttp.interfaces.IParams;
@@ -20,14 +18,10 @@ public class GetRequestBuilder extends BaseRequestBuilder<GetRequestBuilder> imp
     }
 
     @Override
-    public GetRequestBuilder addParam(String key, String value) {
-        params.put(key, value);
-        return this;
-    }
-
-    @Override
-    public GetRequestBuilder addParams(Map<String, String> p) {
-        params.put(p);
+    public GetRequestBuilder addParam(String key, Object value) {
+        if (value instanceof String) {
+            params.put(key, (String) value);
+        }
         return this;
     }
 

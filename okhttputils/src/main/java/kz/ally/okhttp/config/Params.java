@@ -31,9 +31,8 @@ public class Params {
         params.put(key, value);
     }
 
-    public void put(Map<String, String> ps) {
-        if (ps == null) return;
-        params.putAll(ps);
+    public void put(String key, File f) {
+        fileParams.put(key, f);
     }
 
     public boolean isEmpty() {
@@ -56,20 +55,11 @@ public class Params {
         return fileParams.get(key);
     }
 
-    public void putFile(String key, File f) {
-        fileParams.put(key, f);
-    }
 
-    public void putFiles(Map<String, File> fs) {
-        if (fs == null) return;
-        fileParams.putAll(fs);
-    }
 
     public boolean hasFile() {
         return fileParams == null || fileParams.isEmpty();
     }
-
-
 
     /**
      * 拼装url和params

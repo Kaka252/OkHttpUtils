@@ -1,7 +1,6 @@
 package kz.ally.okhttp.method;
 
 import java.io.File;
-import java.util.Map;
 
 import kz.ally.okhttp.ApiRequestCall;
 import kz.ally.okhttp.config.Params;
@@ -26,14 +25,12 @@ public class PostRequestBuilder extends BaseRequestBuilder<PostRequestBuilder> i
     }
 
     @Override
-    public PostRequestBuilder addParam(String key, String value) {
-        params.put(key, value);
-        return this;
-    }
-
-    @Override
-    public PostRequestBuilder addParams(Map<String, String> p) {
-        params.put(p);
+    public PostRequestBuilder addParam(String key, Object value) {
+        if (value instanceof String) {
+            params.put(key, (String) value);
+        } else if (value instanceof File) {
+            params.put(key, (File) value);
+        }
         return this;
     }
 
@@ -43,22 +40,6 @@ public class PostRequestBuilder extends BaseRequestBuilder<PostRequestBuilder> i
             throw new NullPointerException("Params must not be null.");
         }
         this.params = params;
-        return this;
-    }
-
-    public PostRequestBuilder addFile(String key, File f) {
-        if (f == null) {
-            throw new NullPointerException("File must not be null.");
-        }
-        params.putFile(key, f);
-        return this;
-    }
-
-    public PostRequestBuilder addFiles(Map<String, File> fs) {
-        if (fs == null) {
-            throw new NullPointerException("File must not be null.");
-        }
-        params.putFiles(fs);
         return this;
     }
 }

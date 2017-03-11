@@ -1,7 +1,5 @@
 package kz.ally.okhttp.interfaces;
 
-import java.util.Map;
-
 import kz.ally.okhttp.config.Params;
 import kz.ally.okhttp.method.BaseRequestBuilder;
 
@@ -11,7 +9,6 @@ import kz.ally.okhttp.method.BaseRequestBuilder;
  */
 public interface IParams {
 
-    BaseRequestBuilder addParam(String key, String value);
-    BaseRequestBuilder addParams(Map<String, String> p);
+    BaseRequestBuilder addParam(String key, Object value);
     BaseRequestBuilder addParams(Params params);
 }

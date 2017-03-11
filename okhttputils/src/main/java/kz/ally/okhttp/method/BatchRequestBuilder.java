@@ -5,7 +5,6 @@ import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import kz.ally.okhttp.ApiRequestCall;
 import kz.ally.okhttp.config.Params;
@@ -85,20 +84,13 @@ public class BatchRequestBuilder extends BaseRequestBuilder<BatchRequestBuilder>
     }
 
     @Override
-    public BatchRequestBuilder addParam(String key, String value) {
+    public BatchRequestBuilder addParam(String key, Object value) {
         if (params == null) {
             params = new Params();
         }
-        params.put(key, value);
-        return this;
-    }
-
-    @Override
-    public BatchRequestBuilder addParams(Map<String, String> p) {
-        if (params == null) {
-            params = new Params();
+        if (value instanceof String) {
+            params.put(key, (String) value);
         }
-        params.put(p);
         return this;
     }
 
