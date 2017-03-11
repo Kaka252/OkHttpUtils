@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        get();
     }
 
     private void get() {
@@ -86,10 +87,12 @@ public class MainActivity extends AppCompatActivity {
         String url = "http://api.weizhipin.com/api/batch/batchRun";
         String batchKey = "batch_method_feed";
 
-        GetRequestBuilder profile = new GetRequestBuilder("geek/getBossProfile");
+        GetRequestBuilder profile = new GetRequestBuilder();
+        profile.url("geek/getBossProfile");
         profile.addParam("bossId", "1823");
 
-        GetRequestBuilder list = new GetRequestBuilder("geek/getBossProfileJobList");
+        GetRequestBuilder list = new GetRequestBuilder();
+        list.url("geek/getBossProfileJobList");
         list.addParam("bossId", "1823");
         list.addParam("page", "1");
 
