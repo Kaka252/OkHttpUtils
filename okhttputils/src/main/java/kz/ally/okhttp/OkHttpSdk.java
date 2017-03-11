@@ -28,13 +28,7 @@ public class OkHttpSdk {
     private static volatile OkHttpClient client;
 
     private OkHttpSdk() {
-        if (client == null) {
-            synchronized (OkHttpSdk.class) {
-                if (client == null) {
-                    client = initConfig(null);
-                }
-            }
-        }
+        client = initConfig(null);
     }
 
     /**

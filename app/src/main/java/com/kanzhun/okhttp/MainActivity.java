@@ -51,6 +51,26 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private void post() {
+        String url = "https://api.douban.com/v2/music/search";
+        Params params = new Params();
+        params.put("q", "银魂");
+        params.put("start", "0");
+        params.put("count", "1");
+        OkHttpSdk.getInstance().post(url, params, new GsonCallback<NetMusic>() {
+
+            @Override
+            public void onError(Call call, Exception e) {
+
+            }
+
+            @Override
+            public void onResponse(NetMusic music) {
+                Log.d(TAG, music.toString());
+            }
+        });
+    }
+
     private void download() {
         String url = "https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b4000_4000&sec=1487925706&di=d5eafb6a2bf83796ffb88a91322af3f4&src=http://i0.hdslb.com/bfs/face/b7246b976ee6225da7258dc604683af258d69709.jpg";
         String dir = Environment.getExternalStorageDirectory().getAbsolutePath();
