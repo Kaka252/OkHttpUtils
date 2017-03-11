@@ -2,6 +2,7 @@ package kz.ally.okhttp;
 
 import java.util.concurrent.TimeUnit;
 
+import kz.ally.okhttp.callback.AbsCallback;
 import kz.ally.okhttp.config.HttpConfig;
 import kz.ally.okhttp.config.Params;
 import kz.ally.okhttp.method.BatchRequestBuilder;
@@ -64,31 +65,47 @@ public class OkHttpSdk {
     }
 
     /**
-     * 构建Get请求方法
+     * Get请求
      *
+     * @param url
      * @return
      */
-    public GetRequestBuilder get() {
-        return new GetRequestBuilder();
+    public <T> void get(String url, AbsCallback<T> callback) {
+        get(url, new Params(), callback);
     }
 
-    public GetRequestBuilder get(String url) {
-        return new GetRequestBuilder(url);
+    public <T> void get(String url, Params params, AbsCallback<T> callback) {
+        get(url, params, callback, HttpConfig.DEFAULT_REQUEST_TAG);
     }
 
-    public GetRequestBuilder get(String url, Params params) {
-        return new GetRequestBuilder(url, params);
+    public <T> void get(String url, Params params, AbsCallback<T> callback, Object tag) {
+        new GetRequestBuilder().url(url).addParams(params).tag(tag).build().async(callback);
     }
 
     /**
-     * 构建批量请求方法
+     * Post请求
      *
+     * @param url
      * @return
      */
-    public BatchRequestBuilder batch() {
-        return new BatchRequestBuilder();
+    public <T> void post(String url, AbsCallback<T> callback) {
+        post(url, new Params(), callback);
     }
 
+    public <T> void post(String url, Params params, AbsCallback<T> callback) {
+        post(url, params, callback, HttpConfig.DEFAULT_REQUEST_TAG);
+    }
+
+    public <T> void post(String url, Params params, AbsCallback<T> callback, Object tag) {
+        new PostRequestBuilder().url(url).addParams(params).tag(tag).build().async(callback);
+    }
+
+    /**
+     * batch请求
+     *
+     * @param url
+     * @return
+     */
     public BatchRequestBuilder batch(String url) {
         return new BatchRequestBuilder(url);
     }
@@ -98,20 +115,10 @@ public class OkHttpSdk {
     }
 
     /**
-     * 构建Post请求方法
-     *
-     * @return
+     * 取消默认
      */
-    public PostRequestBuilder post() {
-        return new PostRequestBuilder();
-    }
-
-    public PostRequestBuilder post(String url) {
-        return new PostRequestBuilder(url);
-    }
-
-    public PostRequestBuilder post(String url, Params params) {
-        return new PostRequestBuilder(url, params);
+    public void cancelDefaultTag() {
+        cancelTag(HttpConfig.DEFAULT_REQUEST_TAG);
     }
 
     /**
@@ -134,5 +141,4 @@ public class OkHttpSdk {
             }
         }
     }
-
 }

@@ -14,16 +14,6 @@ import kz.ally.okhttp.request.GetRequest;
 public class GetRequestBuilder extends BaseRequestBuilder<GetRequestBuilder> implements IParams {
 
     public GetRequestBuilder() {
-        this("");
-    }
-
-    public GetRequestBuilder(String url) {
-        this(url, null);
-    }
-
-    public GetRequestBuilder(String url, Params ps) {
-        this.url = url;
-        params = ps;
         if (params == null) {
             params = new Params();
         }

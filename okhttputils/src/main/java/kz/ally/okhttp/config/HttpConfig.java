@@ -22,6 +22,7 @@ import okhttp3.OkHttpClient;
  */
 public class HttpConfig {
 
+    public static final String DEFAULT_REQUEST_TAG = "okhttp_defaultRequest";
     /**
      * 默认超时时间
      */

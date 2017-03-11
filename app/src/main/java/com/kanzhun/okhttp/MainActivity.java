@@ -36,11 +36,7 @@ public class MainActivity extends AppCompatActivity {
         params.put("q", "银魂");
         params.put("start", "0");
         params.put("count", "1");
-        final ApiRequestCall call = OkHttpSdk.getInstance()
-                .get(url, params)
-                .tag(this)
-                .build();
-        call.async(new GsonCallback<NetMusic>() {
+        OkHttpSdk.getInstance().get(url, params, new GsonCallback<NetMusic>() {
 
             @Override
             public void onError(Call call, Exception e) {
@@ -58,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
         String url = "https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b4000_4000&sec=1487925706&di=d5eafb6a2bf83796ffb88a91322af3f4&src=http://i0.hdslb.com/bfs/face/b7246b976ee6225da7258dc604683af258d69709.jpg";
         String dir = Environment.getExternalStorageDirectory().getAbsolutePath();
         String fileName = "gakki.jpg";
-        OkHttpSdk.getInstance().get().url(url).tag(this).build().async(new FileCallback(dir, fileName) {
+        OkHttpSdk.getInstance().get(url, new FileCallback(dir, fileName) {
             @Override
             public void onError(Call call, Exception e) {
 
@@ -73,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void getBitmap() {
         String url = "https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b4000_4000&sec=1487925706&di=d5eafb6a2bf83796ffb88a91322af3f4&src=http://i0.hdslb.com/bfs/face/b7246b976ee6225da7258dc604683af258d69709.jpg";
-        OkHttpSdk.getInstance().get().url(url).tag(this).build().async(new BitmapCallback() {
+        OkHttpSdk.getInstance().get(url, new BitmapCallback() {
             @Override
             public void onError(Call call, Exception e) {
 
@@ -90,12 +86,10 @@ public class MainActivity extends AppCompatActivity {
         String url = "http://api.weizhipin.com/api/batch/batchRun";
         String batchKey = "batch_method_feed";
 
-        GetRequestBuilder profile = new GetRequestBuilder();
-        profile.url("geek/getBossProfile");
+        GetRequestBuilder profile = new GetRequestBuilder("geek/getBossProfile");
         profile.addParam("bossId", "1823");
 
-        GetRequestBuilder list = new GetRequestBuilder();
-        list.url("geek/getBossProfileJobList");
+        GetRequestBuilder list = new GetRequestBuilder("geek/getBossProfileJobList");
         list.addParam("bossId", "1823");
         list.addParam("page", "1");
 

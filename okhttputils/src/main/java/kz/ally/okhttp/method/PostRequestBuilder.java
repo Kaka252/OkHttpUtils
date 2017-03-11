@@ -15,16 +15,6 @@ import kz.ally.okhttp.request.PostRequest;
 public class PostRequestBuilder extends BaseRequestBuilder<PostRequestBuilder> implements IParams {
 
     public PostRequestBuilder() {
-        this("");
-    }
-
-    public PostRequestBuilder(String url) {
-        this(url, null);
-    }
-
-    public PostRequestBuilder(String url, Params ps) {
-        this.url = url;
-        params = ps;
         if (params == null) {
             params = new Params();
         }
