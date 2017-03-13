@@ -35,8 +35,8 @@ public class MainActivity extends AppCompatActivity {
         String url = "https://api.douban.com/v2/music/search";
         Params params = new Params();
         params.put("q", "银魂");
-        params.put("start", "0");
-        params.put("count", "1");
+        params.put("start", 0);
+        params.put("count", 1);
         OkHttpSdk.getInstance().get(url, params, new GsonCallback<NetMusic>() {
 
             @Override
@@ -55,8 +55,8 @@ public class MainActivity extends AppCompatActivity {
         String url = "https://api.douban.com/v2/music/search";
         Params params = new Params();
         params.put("q", "银魂");
-        params.put("start", "0");
-        params.put("count", "1");
+        params.put("start", 0);
+        params.put("count", 1);
         OkHttpSdk.getInstance().post(url, params, new GsonCallback<NetMusic>() {
 
             @Override
@@ -109,12 +109,12 @@ public class MainActivity extends AppCompatActivity {
 
         GetRequestBuilder profile = new GetRequestBuilder();
         profile.url("geek/getBossProfile");
-        profile.addParam("bossId", "1823");
+        profile.addParam("bossId", 1823);
 
         GetRequestBuilder list = new GetRequestBuilder();
         list.url("geek/getBossProfileJobList");
-        list.addParam("bossId", "1823");
-        list.addParam("page", "1");
+        list.addParam("bossId", 1823);
+        list.addParam("page", 1);
 
         ApiRequestCall call = OkHttpSdk.getInstance()
                 .batch(url, batchKey)

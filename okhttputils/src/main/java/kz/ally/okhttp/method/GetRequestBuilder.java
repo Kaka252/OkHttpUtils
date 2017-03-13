@@ -27,18 +27,19 @@ public class GetRequestBuilder extends BaseRequestBuilder<GetRequestBuilder> imp
 
     @Override
     public GetRequestBuilder addParam(String key, Object value) {
-        if (value instanceof String) {
-            params.put(key, (String) value);
-        }
+        params.put(key, value);
         return this;
     }
 
     @Override
     public GetRequestBuilder addParams(Params params) {
-        if (params == null) {
-            throw new NullPointerException("Params must not be null.");
+        if (params != null && !params.isEmpty()) {
+            for (String key : params.keySet()) {
+                if (TextUtils.isEmpty(key)) continue;
+                Object o = params.get(key);
+                addParam(key, o);
+            }
         }
-        this.params = params;
         return this;
     }
 
@@ -62,9 +63,29 @@ public class GetRequestBuilder extends BaseRequestBuilder<GetRequestBuilder> imp
         Set<String> keys = params.keySet();
         for (String key : keys) {
             if (TextUtils.isEmpty(key)) continue;
-            builder.appendQueryParameter(key, params.get(key));
+            String value = castString(params.get(key));
+            if (TextUtils.isEmpty(value)) continue;
+            builder.appendQueryParameter(key, value);
         }
         Log.d(TAG, builder.build().toString());
         return builder.build().toString();
+    }
+
+    public String castString(Object o) {
+        String value = "";
+        if (o instanceof Long) {
+            value = String.valueOf(o);
+        } else if (o instanceof Float) {
+            value = String.valueOf(o);
+        } else if (o instanceof Short) {
+            value = String.valueOf(o);
+        } else if (o instanceof Integer) {
+            value = String.valueOf(o);
+        } else if (o instanceof Boolean) {
+            value = String.valueOf(o);
+        } else if (o instanceof String) {
+            value = (String) o;
+        }
+        return value;
     }
 }

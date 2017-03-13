@@ -14,7 +14,7 @@ public class Params {
 
     private static final String TAG = "URLParams";
 
-    private Map<String, String> params;
+    private Map<String, Object> params;
 
     private Map<String, File> fileParams;
 
@@ -23,7 +23,7 @@ public class Params {
         fileParams = new HashMap<>();
     }
 
-    public void put(String key, String value) {
+    public void put(String key, Object value) {
         params.put(key, value);
     }
 
@@ -39,7 +39,7 @@ public class Params {
         return params.keySet();
     }
 
-    public String get(String key) {
+    public Object get(String key) {
         return params.get(key);
     }
 

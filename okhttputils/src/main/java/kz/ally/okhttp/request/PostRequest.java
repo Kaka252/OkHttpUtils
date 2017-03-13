@@ -42,7 +42,8 @@ public class PostRequest extends BaseRequest {
         if (params.isEmpty()) return builder;
         for (String key : params.keySet()) {
             if (TextUtils.isEmpty(key)) continue;
-            builder.add(key, params.get(key));
+            String value = castString(params.get(key));
+            builder.add(key, value);
         }
         return builder;
     }
@@ -52,8 +53,9 @@ public class PostRequest extends BaseRequest {
         builder.setType(MultipartBody.FORM);
         for (String key : params.keySet()) {
             if (TextUtils.isEmpty(key)) continue;
+            String value = castString(params.get(key));
             builder.addPart(Headers.of("Content-Disposition", "form-data; name=\"" + key + "\""),
-                    RequestBody.create(null, params.get(key)));
+                    RequestBody.create(null, value));
         }
 
         for (String key : params.fileSet()) {
@@ -64,6 +66,25 @@ public class PostRequest extends BaseRequest {
                     RequestBody.create(MediaType.parse("application/octet-stream"), file));
         }
         return builder;
+    }
+
+    public String castString(Object o) {
+        String value = "";
+        if (o == null) return value;
+        if (o instanceof Long) {
+            value = String.valueOf(o);
+        } else if (o instanceof Float) {
+            value = String.valueOf(o);
+        } else if (o instanceof Short) {
+            value = String.valueOf(o);
+        } else if (o instanceof Integer) {
+            value = String.valueOf(o);
+        } else if (o instanceof Boolean) {
+            value = String.valueOf(o);
+        } else if (o instanceof String) {
+            value = (String) o;
+        }
+        return value;
     }
 
 }
