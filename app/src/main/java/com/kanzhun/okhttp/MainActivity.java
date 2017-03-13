@@ -2,18 +2,19 @@ package com.kanzhun.okhttp;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.kanzhun.okhttp.bean.NetMusic;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
-import kz.ally.okhttp.ApiRequestCall;
 import kz.ally.okhttp.OkHttpSdk;
 import kz.ally.okhttp.callback.BitmapCallback;
 import kz.ally.okhttp.callback.FileCallback;
@@ -28,17 +29,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private static final String TAG = "MainActivity";
     private ImageView ivImage;
     private ProgressBar pb;
+    private Button btnDownload;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        findViewById(R.id.btn_download).setOnClickListener(this);
+        btnDownload = (Button) findViewById(R.id.btn_download);
+        btnDownload.setOnClickListener(this);
         ivImage = (ImageView) findViewById(R.id.iv_image);
         pb = (ProgressBar) findViewById(R.id.progress_bar);
         pb.setProgress(100);
         get();
-        downloadFile();
     }
 
     private void get() {
@@ -66,13 +68,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      */
     private void downloadFile() {
         String url = "https://www.zhipin.com/d/v2/?type=ckand&pkn=intro";
-        String dir = Environment.getExternalStorageDirectory().getAbsolutePath();
         String fileName = "bosszhipin.apk";
-        OkHttpSdk.getInstance().get(url, new FileCallback(dir, fileName) {
+        OkHttpSdk.getInstance().get(url, new FileCallback(fileName) {
 
             @Override
             protected void inProgress(float progress, long total) {
+                btnDownload.setText("正在下载中...");
                 pb.setProgress((int) (progress * 100));
+
             }
 
             @Override
@@ -82,6 +85,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             @Override
             public void onResponse(File resp) {
+                btnDownload.setText("下载完成");
 //                Uri uri = Uri.fromFile(resp);
 //                if (uri != null) {
 //                    ivImage.setImageURI(uri);
@@ -118,12 +122,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         list.addParam("bossId", 1823);
         list.addParam("page", 1);
 
-        ApiRequestCall call = OkHttpSdk.getInstance()
-                .batch(url, batchKey)
-                .addRequest(profile)
-                .addRequest(list)
-                .build();
-        call.async(new StringCallback() {
+        List<GetRequestBuilder> builderList = new ArrayList<>();
+        builderList.add(profile);
+        builderList.add(list);
+        OkHttpSdk.getInstance().batch(url, batchKey, builderList, new StringCallback() {
             @Override
             public void onError(Call call, Exception e) {
 
@@ -145,5 +147,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             default:
                 break;
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        OkHttpSdk.getInstance().cancelDefaultTag();
     }
 }

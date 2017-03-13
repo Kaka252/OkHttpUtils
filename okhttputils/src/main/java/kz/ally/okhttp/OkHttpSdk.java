@@ -1,8 +1,11 @@
 package kz.ally.okhttp;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import kz.ally.okhttp.callback.AbsCallback;
+import kz.ally.okhttp.callback.StringCallback;
 import kz.ally.okhttp.config.HttpConfig;
 import kz.ally.okhttp.config.Params;
 import kz.ally.okhttp.method.BatchRequestBuilder;
@@ -100,12 +103,21 @@ public class OkHttpSdk {
      * @param url
      * @return
      */
-    public BatchRequestBuilder batch(String url) {
-        return new BatchRequestBuilder(url);
+    public void batch(String url, String batchKey, GetRequestBuilder[] builders, StringCallback callback) {
+        List<GetRequestBuilder> builderList = new ArrayList<>();
+        for (GetRequestBuilder builder : builders) {
+            if (builder == null) continue;
+            builderList.add(builder);
+        }
+        batch(url, batchKey, builderList, callback);
     }
 
-    public BatchRequestBuilder batch(String url, String batchKey) {
-        return new BatchRequestBuilder(url, batchKey);
+    public void batch(String url, String batchKey, List<GetRequestBuilder> builders, StringCallback callback) {
+        batch(url, batchKey, builders, callback, HttpConfig.DEFAULT_REQUEST_TAG);
+    }
+
+    public void batch(String url, String batchKey, List<GetRequestBuilder> builders, StringCallback callback, Object tag) {
+        new BatchRequestBuilder(url, batchKey).tag(tag).addRequest(builders).build().async(callback);
     }
 
     /**

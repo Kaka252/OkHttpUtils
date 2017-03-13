@@ -1,6 +1,7 @@
 package kz.ally.okhttp.callback;
 
-import android.support.annotation.NonNull;
+import android.os.Environment;
+import android.util.Log;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,12 +17,20 @@ import okio.Okio;
  */
 public abstract class FileCallback extends AbsCallback<File> {
 
-    private String dir;
-    private String name;
+    private static final String TAG = "FileCallback";
 
-    public FileCallback(@NonNull String dir, @NonNull String name) {
+    private String dir;
+    private String fileName;
+
+    public FileCallback(String name) {
+        dir = Environment.getExternalStorageDirectory().getAbsolutePath();
+        Log.d(TAG, dir);
+        fileName = name;
+    }
+
+    public FileCallback(String dir, String name) {
         this.dir = dir;
-        this.name = name;
+        fileName = name;
     }
 
     @Override
@@ -36,7 +45,7 @@ public abstract class FileCallback extends AbsCallback<File> {
         try {
             long total = resp.body().contentLength();
             source = resp.body().source();
-            file = new File(dir, name);
+            file = new File(dir, fileName);
             if (!file.exists()) file.createNewFile();
             sink = Okio.buffer(Okio.sink(file));
             byte[] buf = new byte[1024];
