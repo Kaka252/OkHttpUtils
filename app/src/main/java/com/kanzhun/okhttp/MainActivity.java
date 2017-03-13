@@ -1,10 +1,12 @@
 package com.kanzhun.okhttp;
 
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.ImageView;
 
 import com.kanzhun.okhttp.bean.NetMusic;
 
@@ -23,12 +25,15 @@ import okhttp3.Call;
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
+    private ImageView ivImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ivImage = (ImageView) findViewById(R.id.iv_image);
         get();
+        download();
     }
 
     private void get() {
@@ -83,7 +88,10 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onResponse(File resp) {
-                Log.d(TAG, resp.toString());
+                Uri uri = Uri.fromFile(resp);
+                if (uri != null) {
+                    ivImage.setImageURI(uri);
+                }
             }
         });
     }
