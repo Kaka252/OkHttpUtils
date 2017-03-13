@@ -1,9 +1,5 @@
 package kz.ally.okhttp.config;
 
-import android.net.Uri;
-import android.text.TextUtils;
-import android.util.Log;
-
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
@@ -55,28 +51,8 @@ public class Params {
         return fileParams.get(key);
     }
 
-
-
     public boolean hasFile() {
         return fileParams == null || fileParams.isEmpty();
-    }
-
-    /**
-     * 拼装url和params
-     *
-     * @param url
-     * @return
-     */
-    public String join(String url) {
-        if (TextUtils.isEmpty(url) || params == null || params.isEmpty()) return url;
-        Uri.Builder builder = Uri.parse(url).buildUpon();
-        Set<String> keys = params.keySet();
-        for (String key : keys) {
-            if (TextUtils.isEmpty(key)) continue;
-            builder.appendQueryParameter(key, params.get(key));
-        }
-        Log.d(TAG, builder.build().toString());
-        return builder.build().toString();
     }
 
 }

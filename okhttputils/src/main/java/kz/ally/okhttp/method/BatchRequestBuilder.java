@@ -71,7 +71,7 @@ public class BatchRequestBuilder extends BaseRequestBuilder<BatchRequestBuilder>
             if (TextUtils.isEmpty(mUrl)) continue;
             Params mParams = builder.params;
             if (mParams == null || mParams.isEmpty()) continue;
-            mUrl = mParams.join(mUrl);
+            mUrl = builder.join(mUrl);
             sb.append("\"").append("method=").append(mUrl).append("\"");
             sb.append(",");
         }
