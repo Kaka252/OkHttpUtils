@@ -1,7 +1,5 @@
 package kz.ally.okhttp.method;
 
-import java.io.File;
-
 import kz.ally.okhttp.ApiRequestCall;
 import kz.ally.okhttp.config.Params;
 import kz.ally.okhttp.interfaces.IParams;
@@ -26,19 +24,12 @@ public class PostRequestBuilder extends BaseRequestBuilder<PostRequestBuilder> i
 
     @Override
     public PostRequestBuilder addParam(String key, Object value) {
-        if (value instanceof String) {
-            params.put(key, (String) value);
-        } else if (value instanceof File) {
-            params.put(key, (File) value);
-        }
+        params.put(key, value);
         return this;
     }
 
     @Override
     public PostRequestBuilder addParams(Params params) {
-        if (params == null) {
-            throw new NullPointerException("Params must not be null.");
-        }
         this.params = params;
         return this;
     }

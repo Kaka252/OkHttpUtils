@@ -34,13 +34,7 @@ public class GetRequestBuilder extends BaseRequestBuilder<GetRequestBuilder> imp
 
     @Override
     public GetRequestBuilder addParams(Params params) {
-        if (params != null && !params.isEmpty()) {
-            for (String key : params.keySet()) {
-                if (TextUtils.isEmpty(key)) continue;
-                Object o = params.get(key);
-                addParam(key, o);
-            }
-        }
+        this.params = params;
         return this;
     }
 

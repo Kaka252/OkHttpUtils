@@ -39,6 +39,9 @@ public class BatchRequestBuilder extends BaseRequestBuilder<BatchRequestBuilder>
         this.url = url;
         this.batchKey = batchKey;
         this.requestBuilders = new ArrayList<>();
+        if (params == null) {
+            params = new Params();
+        }
     }
 
     public BatchRequestBuilder addRequest(List<GetRequestBuilder> requestBuilders) {
@@ -85,12 +88,7 @@ public class BatchRequestBuilder extends BaseRequestBuilder<BatchRequestBuilder>
 
     @Override
     public BatchRequestBuilder addParam(String key, Object value) {
-        if (params == null) {
-            params = new Params();
-        }
-        if (value instanceof String) {
-            params.put(key, (String) value);
-        }
+        params.put(key, value);
         return this;
     }
 
