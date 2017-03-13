@@ -7,6 +7,7 @@ import android.util.Log;
 import java.util.Set;
 
 import kz.ally.okhttp.ApiRequestCall;
+import kz.ally.okhttp.Util;
 import kz.ally.okhttp.config.Params;
 import kz.ally.okhttp.interfaces.IParams;
 import kz.ally.okhttp.request.GetRequest;
@@ -63,29 +64,11 @@ public class GetRequestBuilder extends BaseRequestBuilder<GetRequestBuilder> imp
         Set<String> keys = params.keySet();
         for (String key : keys) {
             if (TextUtils.isEmpty(key)) continue;
-            String value = castString(params.get(key));
+            String value = Util.castString(params.get(key));
             if (TextUtils.isEmpty(value)) continue;
             builder.appendQueryParameter(key, value);
         }
         Log.d(TAG, builder.build().toString());
         return builder.build().toString();
-    }
-
-    public String castString(Object o) {
-        String value = "";
-        if (o instanceof Long) {
-            value = String.valueOf(o);
-        } else if (o instanceof Float) {
-            value = String.valueOf(o);
-        } else if (o instanceof Short) {
-            value = String.valueOf(o);
-        } else if (o instanceof Integer) {
-            value = String.valueOf(o);
-        } else if (o instanceof Boolean) {
-            value = String.valueOf(o);
-        } else if (o instanceof String) {
-            value = (String) o;
-        }
-        return value;
     }
 }
