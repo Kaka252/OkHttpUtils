@@ -1,8 +1,7 @@
 package kz.ally.okhttp.request;
 
-import java.util.Map;
-
 import kz.ally.okhttp.config.Params;
+import kz.ally.okhttp.config.RequestHeader;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 
@@ -12,7 +11,7 @@ import okhttp3.RequestBody;
  */
 public class BatchRequest extends BaseRequest {
 
-    public BatchRequest(String url, Object tag, Params params, Map<String, String> headers) {
+    public BatchRequest(String url, Object tag, Params params, RequestHeader headers) {
         super(url, tag, params, headers);
     }
 

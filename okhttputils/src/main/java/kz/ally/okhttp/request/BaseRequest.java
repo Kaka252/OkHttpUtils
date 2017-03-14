@@ -2,10 +2,9 @@ package kz.ally.okhttp.request;
 
 import android.text.TextUtils;
 
-import java.util.Map;
-
 import kz.ally.okhttp.ApiRequestCall;
 import kz.ally.okhttp.config.Params;
+import kz.ally.okhttp.config.RequestHeader;
 import okhttp3.CacheControl;
 import okhttp3.Headers;
 import okhttp3.Request;
@@ -20,10 +19,10 @@ public abstract class BaseRequest {
     protected String url;
     protected Object tag;
     protected Params params;
-    protected Map<String, String> headers;
+    protected RequestHeader headers;
     protected Request.Builder builder;
 
-    BaseRequest(String url, Object tag, Params params, Map<String, String> headers) {
+    BaseRequest(String url, Object tag, Params params, RequestHeader headers) {
         this.url = url;
         this.tag = tag;
         this.params = params;

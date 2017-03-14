@@ -3,10 +3,10 @@ package kz.ally.okhttp.request;
 import android.text.TextUtils;
 
 import java.io.File;
-import java.util.Map;
 
 import kz.ally.okhttp.Util;
 import kz.ally.okhttp.config.Params;
+import kz.ally.okhttp.config.RequestHeader;
 import okhttp3.FormBody;
 import okhttp3.Headers;
 import okhttp3.MediaType;
@@ -20,7 +20,7 @@ import okhttp3.RequestBody;
  */
 public class PostRequest extends BaseRequest {
 
-    public PostRequest(String url, Object tag, Params params, Map<String, String> headers) {
+    public PostRequest(String url, Object tag, Params params, RequestHeader headers) {
         super(url, tag, params, headers);
     }
 

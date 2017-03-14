@@ -79,6 +79,16 @@ public class OkHttpSdk {
         new GetRequestBuilder().url(url).addParams(params).tag(tag).build().async(callback);
     }
 
+//    public void download(DownloadInfo info, DownloadCallback callback) {
+//        if (info == null) {
+//            return;
+//        }
+//        RequestHeader header = new RequestHeader();
+//        header.put("Range", "bytes=" + info.startLocation + "-" + info.endLocation);
+//        header.put("Charset", "UTF-8");
+//        new GetRequestBuilder().url(info.url).addParams(new Params()).headers(header).build().async(callback);
+//    }
+
     /**
      * Post请求
      *

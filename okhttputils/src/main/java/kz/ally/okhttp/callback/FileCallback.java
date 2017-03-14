@@ -80,7 +80,7 @@ public abstract class FileCallback extends AbsCallback<File> {
             public void run() {
                 inProgress(progress * 1.0f / total, total);
             }
-        });
+        }, 1000);
     }
 
     protected void inProgress(float progress, long total) {

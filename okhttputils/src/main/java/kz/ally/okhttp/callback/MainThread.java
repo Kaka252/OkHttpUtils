@@ -21,7 +21,11 @@ public class MainThread {
 
         @Override
         public void execute(@NonNull Runnable runnable) {
-            handler.post(runnable);
+            execute(runnable, 0);
+        }
+
+        void execute(@NonNull Runnable runnable, long delayMillis) {
+            handler.postDelayed(runnable, delayMillis);
         }
     }
 
@@ -44,5 +48,9 @@ public class MainThread {
 
     public void execute(Runnable runnable) {
         executor.execute(runnable);
+    }
+
+    public void execute(Runnable runnable, long delayMillis) {
+        executor.execute(runnable, delayMillis);
     }
 }

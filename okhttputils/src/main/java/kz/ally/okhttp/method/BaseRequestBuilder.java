@@ -1,8 +1,7 @@
 package kz.ally.okhttp.method;
 
-import java.util.Map;
-
 import kz.ally.okhttp.ApiRequestCall;
+import kz.ally.okhttp.config.RequestHeader;
 import kz.ally.okhttp.config.Params;
 
 /**
@@ -17,7 +16,7 @@ public abstract class BaseRequestBuilder<T extends BaseRequestBuilder> {
 
     protected Params params;
 
-    protected Map<String, String> headers;
+    protected RequestHeader headers;
 
     public T url(String url) {
         this.url = url;
@@ -29,9 +28,13 @@ public abstract class BaseRequestBuilder<T extends BaseRequestBuilder> {
         return (T) this;
     }
 
-    public T headers(Map<String, String> headers) {
+    public T headers(RequestHeader headers) {
         this.headers = headers;
         return (T) this;
+    }
+
+    public RequestHeader getHeaders() {
+        return headers;
     }
 
     public Params getParams() {
