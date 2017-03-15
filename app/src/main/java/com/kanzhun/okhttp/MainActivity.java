@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         ivImage = (ImageView) findViewById(R.id.iv_image);
         pb = (ProgressBar) findViewById(R.id.progress_bar);
         pb.setProgress(100);
-        get();
+//        get();
     }
 
     private void get() {
