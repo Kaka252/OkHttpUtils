@@ -7,6 +7,7 @@ import java.io.IOException;
 import kz.ally.okhttp.callback.AbsCallback;
 import kz.ally.okhttp.callback.MainThread;
 import kz.ally.okhttp.request.BaseRequest;
+import kz.ally.okhttp.response.ApiResponse;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.OkHttpClient;
@@ -44,52 +45,9 @@ public class ApiRequestCall {
      *
      * @param callback
      */
-    public void async(final AbsCallback callback) {
+    void async(final AbsCallback callback) {
         Call call = newCall();
-        call.enqueue(new Callback() {
-            @Override
-            public void onFailure(final Call call, final IOException e) {
-                failResponseCallback(callback, call, e);
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                try {
-                    if (response.isSuccessful()) {
-                        Object result = callback.parseResponse(response);
-                        successResponseCallback(callback, result);
-                    } else {
-                        failResponseCallback(callback, call, null);
-                    }
-                } catch (Exception e) {
-                    failResponseCallback(callback, call, e);
-                } finally {
-                    if (response.body() != null) {
-                        response.body().close();
-                    }
-                }
-            }
-        });
-    }
-
-    /**
-     * 请求失败后回调
-     *
-     * @param callback
-     * @param call
-     * @param e
-     */
-    private void failResponseCallback(final AbsCallback callback, final Call call, final Exception e) {
-        MainThread.getInstance().execute(new Runnable() {
-            @Override
-            public void run() {
-                if (call.isCanceled()) {
-                    callback.onError(call, null);
-                } else {
-                    callback.onError(call, e);
-                }
-            }
-        });
+        call.enqueue(new ApiResponse(callback));
     }
 
     /**

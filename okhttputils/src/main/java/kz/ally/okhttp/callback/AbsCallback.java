@@ -2,6 +2,7 @@ package kz.ally.okhttp.callback;
 
 import java.io.IOException;
 
+import kz.ally.okhttp.response.ApiResponse;
 import okhttp3.Call;
 import okhttp3.Response;
 
