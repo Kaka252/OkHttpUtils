@@ -22,23 +22,25 @@ public class ApiResponse implements Callback {
 
     @Override
     public void onFailure(Call call, IOException e) {
-        failResponseCallback(callback, call, e);
+        errorCallback(callback, call, e);
     }
 
     @Override
     public void onResponse(Call call, Response response) throws IOException {
-        try {
-            if (response.isSuccessful()) {
-                Object result = callback.parseResponse(response);
-                successResponseCallback(callback, result);
-            } else {
-                failResponseCallback(callback, call, null);
-            }
-        } catch (Exception e) {
-            failResponseCallback(callback, call, e);
-        } finally {
-            if (response.body() != null) {
-                response.body().close();
+        if (callback != null) {
+            try {
+                if (response.isSuccessful()) {
+                    Object result = callback.parseResponse(response);
+                    parseCallback(callback, result);
+                } else {
+                    errorCallback(callback, call, null);
+                }
+            } catch (Exception e) {
+                errorCallback(callback, call, e);
+            } finally {
+                if (response.body() != null) {
+                    response.body().close();
+                }
             }
         }
     }
@@ -50,7 +52,7 @@ public class ApiResponse implements Callback {
      * @param call
      * @param e
      */
-    private void failResponseCallback(final AbsCallback callback, final Call call, final Exception e) {
+    private void errorCallback(final AbsCallback callback, final Call call, final Exception e) {
         MainThread.getInstance().execute(new Runnable() {
             @Override
             public void run() {
@@ -69,7 +71,7 @@ public class ApiResponse implements Callback {
      * @param callback
      * @param result
      */
-    private void successResponseCallback(final AbsCallback callback, final Object result) {
+    private void parseCallback(final AbsCallback callback, final Object result) {
         MainThread.getInstance().execute(new Runnable() {
             @Override
             public void run() {

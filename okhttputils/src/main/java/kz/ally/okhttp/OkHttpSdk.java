@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import io.reactivex.Observable;
 import kz.ally.okhttp.callback.AbsCallback;
 import kz.ally.okhttp.callback.StringCallback;
+import kz.ally.okhttp.common.AbsRequest;
+import kz.ally.okhttp.common.AbsResponse;
+import kz.ally.okhttp.common.RequestMethod;
 import kz.ally.okhttp.config.HttpConfig;
 import kz.ally.okhttp.config.Params;
 import kz.ally.okhttp.method.BatchRequestBuilder;
@@ -62,6 +64,28 @@ public class OkHttpSdk {
         return client;
     }
 
+    public <T extends AbsResponse> void executeRequest(AbsRequest<T> request) {
+        String url = request.getUrl();
+        Params params = request.getParams();
+        Object tag = request.getClass();
+
+        if (request.getMethod() == RequestMethod.GET) {
+            new GetRequestBuilder()
+                    .url(url)
+                    .addParams(params)
+                    .tag(tag)
+                    .build()
+                    .async(request.getRawResponseCallback());
+        } else if (request.getMethod() == RequestMethod.POST) {
+            new PostRequestBuilder()
+                    .url(url)
+                    .addParams(params)
+                    .tag(tag)
+                    .build()
+                    .async(request.getRawResponseCallback());
+        }
+    }
+
     /**
      * Get请求
      *
@@ -79,16 +103,6 @@ public class OkHttpSdk {
     public <T> void get(String url, Params params, AbsCallback<T> callback, Object tag) {
         new GetRequestBuilder().url(url).addParams(params).tag(tag).build().async(callback);
     }
-
-//    public void download(DownloadInfo info, DownloadCallback callback) {
-//        if (info == null) {
-//            return;
-//        }
-//        RequestHeader header = new RequestHeader();
-//        header.put("Range", "bytes=" + info.startLocation + "-" + info.endLocation);
-//        header.put("Charset", "UTF-8");
-//        new GetRequestBuilder().url(info.url).addParams(new Params()).headers(header).build().async(callback);
-//    }
 
     /**
      * Post请求

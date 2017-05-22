@@ -9,7 +9,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
-import com.kanzhun.okhttp.bean.NetMusic;
+import com.kanzhun.okhttp.common.GetMusicListRequest;
+import com.kanzhun.okhttp.common.GetMusicListResponse;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -20,7 +21,6 @@ import kz.ally.okhttp.callback.BitmapCallback;
 import kz.ally.okhttp.callback.FileCallback;
 import kz.ally.okhttp.callback.GsonCallback;
 import kz.ally.okhttp.callback.StringCallback;
-import kz.ally.okhttp.config.Params;
 import kz.ally.okhttp.method.GetRequestBuilder;
 import okhttp3.Call;
 
@@ -40,27 +40,49 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         ivImage = (ImageView) findViewById(R.id.iv_image);
         pb = (ProgressBar) findViewById(R.id.progress_bar);
         pb.setProgress(100);
-//        get();
+
+        get();
     }
 
     private void get() {
-        String url = "https://api.douban.com/v2/music/search";
-        Params params = new Params();
-        params.put("q", "银魂");
-        params.put("start", 0);
-        params.put("count", 1);
-        OkHttpSdk.getInstance().get(url, params, new GsonCallback<NetMusic>() {
-
+        GetMusicListRequest request = new GetMusicListRequest(new GsonCallback<GetMusicListResponse>() {
             @Override
             public void onError(Call call, Exception e) {
 
             }
 
             @Override
-            public void onResponse(NetMusic music) {
-                Log.d(TAG, music.toString());
+            public void onResponse(GetMusicListResponse resp) {
+                if (resp != null) {
+                    Log.d(TAG, resp.toString());
+                }
             }
         });
+        request.q = "银魂";
+        request.start = 0;
+        request.count = 1;
+        OkHttpSdk.getInstance().executeRequest(request);
+
+
+
+
+//        String url = "https://api.douban.com/v2/music/search";
+//        Params params = new Params();
+//        params.put("q", "银魂");
+//        params.put("start", 0);
+//        params.put("count", 1);
+//        OkHttpSdk.getInstance().get(url, params, new GsonCallback<NetMusic>() {
+//
+//            @Override
+//            public void onError(Call call, Exception e) {
+//
+//            }
+//
+//            @Override
+//            public void onResponse(NetMusic music) {
+//                Log.d(TAG, music.toString());
+//            }
+//        });
     }
 
     /**
