@@ -1,4 +1,4 @@
-package kz.ally.okhttp.common;
+package kz.ally.okhttp.client;
 
 import com.google.gson.annotations.Expose;
 

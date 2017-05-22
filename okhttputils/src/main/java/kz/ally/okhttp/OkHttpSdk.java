@@ -2,9 +2,9 @@ package kz.ally.okhttp;
 
 import java.util.concurrent.TimeUnit;
 
-import kz.ally.okhttp.common.AbsRequest;
-import kz.ally.okhttp.common.AbsResponse;
-import kz.ally.okhttp.common.RequestMethod;
+import kz.ally.okhttp.client.AbsRequest;
+import kz.ally.okhttp.client.AbsResponse;
+import kz.ally.okhttp.client.RequestMethod;
 import kz.ally.okhttp.config.HttpConfig;
 import kz.ally.okhttp.config.Params;
 import kz.ally.okhttp.method.GetRequestBuilder;

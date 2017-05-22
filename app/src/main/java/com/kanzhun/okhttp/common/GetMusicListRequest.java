@@ -3,8 +3,8 @@ package com.kanzhun.okhttp.common;
 import com.google.gson.annotations.Expose;
 
 import kz.ally.okhttp.callback.ObjCallback;
-import kz.ally.okhttp.common.AbsRequest;
-import kz.ally.okhttp.common.RequestMethod;
+import kz.ally.okhttp.client.AbsRequest;
+import kz.ally.okhttp.client.RequestMethod;
 
 /**
  * Author: ZhouYou

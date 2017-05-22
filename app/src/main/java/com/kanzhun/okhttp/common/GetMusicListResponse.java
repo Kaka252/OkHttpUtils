@@ -4,7 +4,7 @@ import com.kanzhun.okhttp.bean.NetMusic;
 
 import java.util.List;
 
-import kz.ally.okhttp.common.AbsResponse;
+import kz.ally.okhttp.client.AbsResponse;
 
 /**
  * Author: ZhouYou

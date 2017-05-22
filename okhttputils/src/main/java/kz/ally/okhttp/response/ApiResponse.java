@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import kz.ally.okhttp.callback.ObjCallback;
 import kz.ally.okhttp.callback.MainThread;
-import kz.ally.okhttp.common.AbsResponse;
+import kz.ally.okhttp.client.AbsResponse;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
