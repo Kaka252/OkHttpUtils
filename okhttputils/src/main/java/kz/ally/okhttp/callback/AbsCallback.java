@@ -2,6 +2,7 @@ package kz.ally.okhttp.callback;
 
 import java.io.IOException;
 
+import kz.ally.okhttp.common.AbsResponse;
 import okhttp3.Call;
 import okhttp3.Response;
 
@@ -9,7 +10,7 @@ import okhttp3.Response;
  * 作者：ZhouYou
  * 日期：2017/2/23.
  */
-public abstract class AbsCallback<T> {
+public abstract class AbsCallback<T extends AbsResponse> {
     /**
      * UI Thread
      *

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
+import kz.ally.okhttp.common.AbsResponse;
 import okhttp3.Response;
 import kz.ally.okhttp.gson.GsonMapper;
 
@@ -11,17 +12,13 @@ import kz.ally.okhttp.gson.GsonMapper;
  * 作者：ZhouYou
  * 日期：2017/2/24.
  */
-public abstract class GsonCallback<T> extends AbsCallback<T> {
+public abstract class GsonCallback<T extends AbsResponse> extends AbsCallback<T> {
 
     @Override
     public T parseResponse(Response resp) throws IOException {
         String result = resp.body().string();
         Class<T> clazz = transform();
-        if (clazz == String.class) {
-            return (T) result;
-        } else {
-            return GsonMapper.getInstance().getGson().fromJson(result, clazz);
-        }
+        return GsonMapper.getInstance().getGson().fromJson(result, clazz);
     }
 
     private Class<T> transform() {

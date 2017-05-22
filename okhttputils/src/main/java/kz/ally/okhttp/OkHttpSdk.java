@@ -1,17 +1,12 @@
 package kz.ally.okhttp;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import kz.ally.okhttp.callback.AbsCallback;
-import kz.ally.okhttp.callback.StringCallback;
 import kz.ally.okhttp.common.AbsRequest;
 import kz.ally.okhttp.common.AbsResponse;
 import kz.ally.okhttp.common.RequestMethod;
 import kz.ally.okhttp.config.HttpConfig;
 import kz.ally.okhttp.config.Params;
-import kz.ally.okhttp.method.BatchRequestBuilder;
 import kz.ally.okhttp.method.GetRequestBuilder;
 import kz.ally.okhttp.method.PostRequestBuilder;
 import okhttp3.Call;
@@ -84,65 +79,6 @@ public class OkHttpSdk {
                     .build()
                     .async(request.getRawResponseCallback());
         }
-    }
-
-    /**
-     * Get请求
-     *
-     * @param url
-     * @return
-     */
-    public <T> void get(String url, AbsCallback<T> callback) {
-        get(url, new Params(), callback);
-    }
-
-    public <T> void get(String url, Params params, AbsCallback<T> callback) {
-        get(url, params, callback, HttpConfig.DEFAULT_REQUEST_TAG);
-    }
-
-    public <T> void get(String url, Params params, AbsCallback<T> callback, Object tag) {
-        new GetRequestBuilder().url(url).addParams(params).tag(tag).build().async(callback);
-    }
-
-    /**
-     * Post请求
-     *
-     * @param url
-     * @return
-     */
-    public <T> void post(String url, AbsCallback<T> callback) {
-        post(url, new Params(), callback);
-    }
-
-    public <T> void post(String url, Params params, AbsCallback<T> callback) {
-        post(url, params, callback, HttpConfig.DEFAULT_REQUEST_TAG);
-    }
-
-    public <T> void post(String url, Params params, AbsCallback<T> callback, Object tag) {
-        new PostRequestBuilder().url(url).addParams(params).tag(tag).build().async(callback);
-    }
-
-    /**
-     * batch请求
-     *
-     * @param url
-     * @return
-     */
-    public void batch(String url, String batchKey, GetRequestBuilder[] builders, StringCallback callback) {
-        List<GetRequestBuilder> builderList = new ArrayList<>();
-        for (GetRequestBuilder builder : builders) {
-            if (builder == null) continue;
-            builderList.add(builder);
-        }
-        batch(url, batchKey, builderList, callback);
-    }
-
-    public void batch(String url, String batchKey, List<GetRequestBuilder> builders, StringCallback callback) {
-        batch(url, batchKey, builders, callback, HttpConfig.DEFAULT_REQUEST_TAG);
-    }
-
-    public void batch(String url, String batchKey, List<GetRequestBuilder> builders, StringCallback callback, Object tag) {
-        new BatchRequestBuilder(url, batchKey).tag(tag).addRequest(builders).build().async(callback);
     }
 
     /**
