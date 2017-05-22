@@ -2,10 +2,9 @@ package kz.ally.okhttp;
 
 import android.support.annotation.NonNull;
 
-import kz.ally.okhttp.callback.AbsCallback;
 import kz.ally.okhttp.request.BaseRequest;
-import kz.ally.okhttp.response.ApiResponse;
 import okhttp3.Call;
+import okhttp3.Callback;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 
@@ -35,17 +34,7 @@ public class ApiRequestCall {
         return call;
     }
 
-    /**
-     * 异步调用
-     *
-     * @param callback
-     */
-    void async(AbsCallback callback) {
-        Call call = newCall();
-        call.enqueue(new ApiResponse(callback));
-    }
-
-    void async(ApiResponse response) {
+    void async(Callback response) {
         Call call = newCall();
         call.enqueue(response);
     }

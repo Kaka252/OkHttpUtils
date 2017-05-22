@@ -11,7 +11,7 @@ import com.kanzhun.okhttp.common.GetMusicListRequest;
 import com.kanzhun.okhttp.common.GetMusicListResponse;
 
 import kz.ally.okhttp.OkHttpSdk;
-import kz.ally.okhttp.callback.GsonCallback;
+import kz.ally.okhttp.callback.ObjCallback;
 import okhttp3.Call;
 
 public class MainActivity extends AppCompatActivity {
@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void get() {
-        GetMusicListRequest request = new GetMusicListRequest(new GsonCallback<GetMusicListResponse>() {
+        GetMusicListRequest request = new GetMusicListRequest(new ObjCallback<GetMusicListResponse>() {
             @Override
             public void onError(Call call, Exception e) {
 

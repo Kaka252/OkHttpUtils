@@ -2,7 +2,7 @@ package kz.ally.okhttp.response;
 
 import java.io.IOException;
 
-import kz.ally.okhttp.callback.AbsCallback;
+import kz.ally.okhttp.callback.ObjCallback;
 import kz.ally.okhttp.callback.MainThread;
 import kz.ally.okhttp.common.AbsResponse;
 import okhttp3.Call;
@@ -15,9 +15,9 @@ import okhttp3.Response;
 
 public class ApiResponse<T extends AbsResponse> implements Callback {
 
-    private AbsCallback<T> callback;
+    private ObjCallback<T> callback;
 
-    public ApiResponse(AbsCallback<T> callback) {
+    public ApiResponse(ObjCallback<T> callback) {
         this.callback = callback;
     }
 
@@ -53,7 +53,7 @@ public class ApiResponse<T extends AbsResponse> implements Callback {
      * @param call
      * @param e
      */
-    private void errorCallback(final AbsCallback callback, final Call call, final Exception e) {
+    private void errorCallback(final ObjCallback callback, final Call call, final Exception e) {
         MainThread.getInstance().execute(new Runnable() {
             @Override
             public void run() {
@@ -72,7 +72,7 @@ public class ApiResponse<T extends AbsResponse> implements Callback {
      * @param callback
      * @param result
      */
-    private void parseCallback(final AbsCallback callback, final T result) {
+    private void parseCallback(final ObjCallback callback, final T result) {
         MainThread.getInstance().execute(new Runnable() {
             @Override
             public void run() {

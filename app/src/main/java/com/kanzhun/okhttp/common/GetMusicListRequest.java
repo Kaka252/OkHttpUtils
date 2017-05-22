@@ -2,7 +2,7 @@ package com.kanzhun.okhttp.common;
 
 import com.google.gson.annotations.Expose;
 
-import kz.ally.okhttp.callback.AbsCallback;
+import kz.ally.okhttp.callback.ObjCallback;
 import kz.ally.okhttp.common.AbsRequest;
 import kz.ally.okhttp.common.RequestMethod;
 
@@ -21,7 +21,7 @@ public class GetMusicListRequest extends AbsRequest {
     @Expose
     public int count;
 
-    public GetMusicListRequest(AbsCallback mCallback) {
+    public GetMusicListRequest(ObjCallback mCallback) {
         super(mCallback);
     }
 

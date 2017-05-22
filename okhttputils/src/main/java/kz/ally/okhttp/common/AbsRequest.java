@@ -4,7 +4,7 @@ import com.google.gson.annotations.Expose;
 
 import java.lang.reflect.Field;
 
-import kz.ally.okhttp.callback.AbsCallback;
+import kz.ally.okhttp.callback.ObjCallback;
 import kz.ally.okhttp.config.Params;
 import kz.ally.okhttp.response.ApiResponse;
 
@@ -16,11 +16,11 @@ public abstract class AbsRequest<T extends AbsResponse> {
 
     private static final String TAG = "AbsRequest";
 
-    public AbsRequest(AbsCallback<T> mCallback) {
+    public AbsRequest(ObjCallback<T> mCallback) {
         this.mCallback = mCallback;
     }
 
-    private AbsCallback<T> mCallback;
+    private ObjCallback<T> mCallback;
 
     public ApiResponse getRawResponseCallback() {
         return new ApiResponse(mCallback);

@@ -1,8 +1,11 @@
 package kz.ally.okhttp.callback;
 
 import java.io.IOException;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 
 import kz.ally.okhttp.common.AbsResponse;
+import kz.ally.okhttp.gson.GsonMapper;
 import okhttp3.Call;
 import okhttp3.Response;
 
@@ -10,7 +13,7 @@ import okhttp3.Response;
  * 作者：ZhouYou
  * 日期：2017/2/23.
  */
-public abstract class AbsCallback<T extends AbsResponse> {
+public abstract class ObjCallback<T extends AbsResponse> {
     /**
      * UI Thread
      *
@@ -26,7 +29,14 @@ public abstract class AbsCallback<T extends AbsResponse> {
      * @return
      * @throws IOException
      */
-    public abstract T parseResponse(Response resp) throws IOException;
+    public T parseResponse(Response resp) throws IOException {
+        String result = resp.body().string();
+        ParameterizedType parameterizedType = (ParameterizedType) getClass().getGenericSuperclass();
+        Type[] type = parameterizedType.getActualTypeArguments();
+        Class<T> clazz = (Class<T>) type[0];
+        T t = GsonMapper.getInstance().getGson().fromJson(result, clazz);
+        return t;
+    }
 
     /**
      * UI Thread
