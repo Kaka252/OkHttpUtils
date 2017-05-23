@@ -44,14 +44,9 @@ public class OkHttpSdk {
         return client;
     }
 
-    public static OkHttpClient initConfig() {
-        client = new OkHttpClient.Builder().build();
-        return client;
-    }
-
     public static OkHttpClient initConfig(HttpConfig config) {
         if (config == null) {
-            client = initConfig();
+            client = new OkHttpClient.Builder().build();
         } else {
             client = new OkHttpClient.Builder()
                     .sslSocketFactory(config.sslSocketFactory, config.x509TrustManager)
