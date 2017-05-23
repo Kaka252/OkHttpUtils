@@ -7,6 +7,7 @@ import kz.ally.okhttp.client.AbsResponse;
 import kz.ally.okhttp.client.RequestMethod;
 import kz.ally.okhttp.config.HttpConfig;
 import kz.ally.okhttp.config.Params;
+import kz.ally.okhttp.interceptors.LogInterceptor;
 import kz.ally.okhttp.method.GetRequestBuilder;
 import kz.ally.okhttp.method.PostRequestBuilder;
 import okhttp3.Call;
@@ -29,7 +30,6 @@ public class OkHttpSdk {
     private static volatile OkHttpClient client;
 
     private OkHttpSdk() {
-        client = initConfig(null);
     }
 
     /**
@@ -45,17 +45,14 @@ public class OkHttpSdk {
     }
 
     public static OkHttpClient initConfig(HttpConfig config) {
-        if (config == null) {
-            client = new OkHttpClient.Builder().build();
-        } else {
-            client = new OkHttpClient.Builder()
-                    .sslSocketFactory(config.sslSocketFactory, config.x509TrustManager)
-                    .cache(config.cache)
-                    .writeTimeout(config.writeTimeout, TimeUnit.MILLISECONDS)
-                    .readTimeout(config.readTimeout, TimeUnit.MILLISECONDS)
-                    .connectTimeout(config.connectTimeout, TimeUnit.MILLISECONDS)
-                    .build();
-        }
+        client = new OkHttpClient.Builder()
+                .sslSocketFactory(config.sslSocketFactory, config.x509TrustManager)
+                .cache(config.cache)
+                .addInterceptor(new LogInterceptor())
+                .writeTimeout(config.writeTimeout, TimeUnit.MILLISECONDS)
+                .readTimeout(config.readTimeout, TimeUnit.MILLISECONDS)
+                .connectTimeout(config.connectTimeout, TimeUnit.MILLISECONDS)
+                .build();
         return client;
     }
 
