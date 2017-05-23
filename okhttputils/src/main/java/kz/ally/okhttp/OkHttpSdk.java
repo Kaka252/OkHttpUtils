@@ -44,15 +44,24 @@ public class OkHttpSdk {
         return client;
     }
 
+    public static OkHttpClient initConfig() {
+        client = new OkHttpClient.Builder().build();
+        return client;
+    }
+
     public static OkHttpClient initConfig(HttpConfig config) {
-        client = new OkHttpClient.Builder()
-                .sslSocketFactory(config.sslSocketFactory, config.x509TrustManager)
-                .cache(config.cache)
-                .addInterceptor(new LogInterceptor())
-                .writeTimeout(config.writeTimeout, TimeUnit.MILLISECONDS)
-                .readTimeout(config.readTimeout, TimeUnit.MILLISECONDS)
-                .connectTimeout(config.connectTimeout, TimeUnit.MILLISECONDS)
-                .build();
+        if (config == null) {
+            client = initConfig();
+        } else {
+            client = new OkHttpClient.Builder()
+                    .sslSocketFactory(config.sslSocketFactory, config.x509TrustManager)
+                    .cache(config.cache)
+                    .addInterceptor(new LogInterceptor())
+                    .writeTimeout(config.writeTimeout, TimeUnit.MILLISECONDS)
+                    .readTimeout(config.readTimeout, TimeUnit.MILLISECONDS)
+                    .connectTimeout(config.connectTimeout, TimeUnit.MILLISECONDS)
+                    .build();
+        }
         return client;
     }
 

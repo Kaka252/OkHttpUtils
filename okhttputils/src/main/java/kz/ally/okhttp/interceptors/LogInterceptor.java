@@ -7,6 +7,7 @@ import java.io.IOException;
 import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
+import okio.Buffer;
 import okio.BufferedSource;
 
 /**
@@ -35,6 +36,9 @@ public class LogInterceptor implements Interceptor {
         BufferedSource source = response.body().source();
         source.request(Long.MAX_VALUE);
 
+        Buffer buffer = source.buffer();
+        double dataCount = (buffer.size() / 1e3d);
+
         StringBuffer sb = new StringBuffer();
         sb.append("\n--------------------------------------------------------");
         sb.append("\n请求时间：").append(time);
@@ -43,6 +47,7 @@ public class LogInterceptor implements Interceptor {
         sb.append("\nMethod = ").append(methodType);
         sb.append("\nRequest Headers = ").append(request.headers());
         sb.append("\nResponse Code = ").append(response.code());
+        sb.append("\nData = ").append(dataCount).append("K");
         sb.append("\n--------------------------------------------------------");
         Log.d(TAG, sb.toString());
         return response;
