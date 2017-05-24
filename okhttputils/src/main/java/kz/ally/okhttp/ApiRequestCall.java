@@ -17,10 +17,8 @@ public class ApiRequestCall {
     private Request request;
     private Call call;
     private BaseRequest baseRequest;
-    private OkHttpClient client;
 
     public ApiRequestCall(@NonNull BaseRequest baseRequest) {
-        client = OkHttpSdk.getInstance().getClient();
         this.baseRequest = baseRequest;
     }
 
@@ -28,14 +26,17 @@ public class ApiRequestCall {
         return baseRequest.setupRequest();
     }
 
-    private Call newCall() {
+    void async(Callback response) {
+        OkHttpClient client = OkHttpSdk.getInstance().getClient();
         request = setupRequest();
         call = client.newCall(request);
-        return call;
+        call.enqueue(response);
     }
 
-    void async(Callback response) {
-        Call call = newCall();
+    void download(Callback response) {
+        OkHttpClient client = OkHttpSdk.getInstance().getClientDownload();
+        request = setupRequest();
+        call = client.newCall(request);
         call.enqueue(response);
     }
 

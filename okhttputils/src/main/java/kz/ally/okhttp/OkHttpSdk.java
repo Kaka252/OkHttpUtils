@@ -30,6 +30,8 @@ public class OkHttpSdk {
 
     private static volatile OkHttpClient client;
 
+    private static volatile OkHttpClient clientDownload; // 用来做下载
+
     private OkHttpSdk() {
     }
 
@@ -45,7 +47,14 @@ public class OkHttpSdk {
         return client;
     }
 
-    public static OkHttpClient initConfig(HttpConfig config) {
+    public OkHttpClient getClientDownload() {
+        if (clientDownload == null) {
+            throw new NullPointerException("OkHttp has not been initialized yet.");
+        }
+        return clientDownload;
+    }
+
+    public static void initConfig(HttpConfig config) {
         if (config == null) {
             client = new OkHttpClient.Builder().build();
         } else {
@@ -58,7 +67,7 @@ public class OkHttpSdk {
                     .connectTimeout(config.connectTimeout, TimeUnit.MILLISECONDS)
                     .build();
         }
-        return client;
+        clientDownload = client;
     }
 
     /**
@@ -102,7 +111,7 @@ public class OkHttpSdk {
                 .addParams(params)
                 .tag(tag)
                 .build()
-                .async(request.getRawResponseCallback());
+                .download(request.getRawResponseCallback());
     }
 
     /**
