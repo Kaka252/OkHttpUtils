@@ -1,5 +1,6 @@
 package kz.ally.okhttp;
 
+import java.io.File;
 import java.util.concurrent.TimeUnit;
 
 import kz.ally.okhttp.client.AbsRequest;
@@ -60,11 +61,16 @@ public class OkHttpSdk {
         return client;
     }
 
+    /**
+     * 执行Get/Post请求
+     * @param request
+     * @param <T>
+     */
     public <T extends AbsResponse> void executeRequest(AbsRequest<T> request) {
         String url = request.getUrl();
         Params params = request.getParams();
-        Object tag = request.getClass();
-
+        Object tag = request.getRequestTag();
+        if (tag == null) tag = request.getClass();
         if (request.getMethod() == RequestMethod.GET) {
             new GetRequestBuilder()
                     .url(url)
@@ -80,6 +86,23 @@ public class OkHttpSdk {
                     .build()
                     .async(request.getRawResponseCallback());
         }
+    }
+
+    /**
+     * 执行下载
+     * @param request
+     */
+    public void executeDownload(AbsRequest<File> request) {
+        String url = request.getUrl();
+        Params params = request.getParams();
+        Object tag = request.getRequestTag();
+        if (tag == null) tag = request.getClass();
+        new GetRequestBuilder()
+                .url(url)
+                .addParams(params)
+                .tag(tag)
+                .build()
+                .async(request.getRawResponseCallback());
     }
 
     /**
