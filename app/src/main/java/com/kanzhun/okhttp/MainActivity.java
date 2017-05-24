@@ -37,7 +37,8 @@ public class MainActivity extends AppCompatActivity {
         tvDownloadPercentage = (TextView) findViewById(R.id.tv_download_percentage);
         ivImage = (ImageView) findViewById(R.id.iv_image);
         pb = (ProgressBar) findViewById(R.id.progress_bar);
-        pb.setProgress(100);
+        pb.setMax(100);
+        pb.setProgress(0);
         tvDownloadPercentage.setText("0.00%");
         btnDownload.setOnClickListener(new View.OnClickListener() {
             @Override
