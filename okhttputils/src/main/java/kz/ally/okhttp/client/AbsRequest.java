@@ -22,6 +22,7 @@ public abstract class AbsRequest<T> {
 
     public AbsRequest(AbsCallback<T> mCallback) {
         this.mCallback = mCallback;
+        this.mCallback.onStart();
     }
 
     private AbsCallback<T> mCallback;

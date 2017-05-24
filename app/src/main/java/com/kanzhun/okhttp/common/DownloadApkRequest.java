@@ -23,7 +23,7 @@ public class DownloadApkRequest extends AbsRequest<File> {
 
     @Override
     public String getUrl() {
-        return "http://1.82.242.43/imtt.dd.qq.com/16891/72517F996BB172A75F992962849B051A.apk"; // 部落冲突
+        return "http://1.199.93.153/imtt.dd.qq.com/16891/5FE88135737E977CCCE1A4DAC9FAFFCB.apk"; // 部落冲突
     }
 
     @Override

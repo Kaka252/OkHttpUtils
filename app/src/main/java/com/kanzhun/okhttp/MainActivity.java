@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -35,6 +36,12 @@ public class MainActivity extends AppCompatActivity {
         pb = (ProgressBar) findViewById(R.id.progress_bar);
         pb.setProgress(100);
 
+        btnDownload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                downloadFile();
+            }
+        });
         get();
     }
 
@@ -58,9 +65,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void downloadFile() {
-        String dir = Environment.getDownloadCacheDirectory().getAbsolutePath();
-        String name = "部落冲突.apk";
+        String dir = Environment.getExternalStorageDirectory().getAbsolutePath();
+        String name = "高德地图.apk";
         DownloadApkRequest request = new DownloadApkRequest(new FileCallback(dir, name) {
+
+            @Override
+            public void onStart() {
+                Log.d(TAG, "下载开始");
+            }
+
             @Override
             public void onError(Call call, Exception e) {
 

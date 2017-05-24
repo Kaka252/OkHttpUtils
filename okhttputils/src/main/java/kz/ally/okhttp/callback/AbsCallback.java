@@ -13,6 +13,13 @@ public abstract class AbsCallback<T> {
 
     /**
      * UI Thread
+     */
+    public void onStart() {
+
+    }
+
+    /**
+     * UI Thread
      *
      * @param call
      * @param e
