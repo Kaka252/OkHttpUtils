@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.kanzhun.okhttp.common.DownloadApkRequest;
 import com.kanzhun.okhttp.common.GetMusicListRequest;
@@ -26,16 +27,18 @@ public class MainActivity extends AppCompatActivity {
     private ImageView ivImage;
     private ProgressBar pb;
     private Button btnDownload;
+    private TextView tvDownloadPercentage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         btnDownload = (Button) findViewById(R.id.btn_download);
+        tvDownloadPercentage = (TextView) findViewById(R.id.tv_download_percentage);
         ivImage = (ImageView) findViewById(R.id.iv_image);
         pb = (ProgressBar) findViewById(R.id.progress_bar);
         pb.setProgress(100);
-
+        tvDownloadPercentage.setText("0.00%");
         btnDownload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -71,7 +74,14 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onStart() {
-                Log.d(TAG, "下载开始");
+                Log.d(TAG, "下载开始，等待中...");
+            }
+
+            @Override
+            protected void inProgress(double progress, long total) {
+                int p = (int) (progress * 100);
+                pb.setProgress(p);
+                tvDownloadPercentage.setText(progress * 100 + "%");
             }
 
             @Override

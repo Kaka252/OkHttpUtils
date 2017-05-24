@@ -37,11 +37,6 @@ public abstract class AbsCallback<T> {
 
     /**
      * UI Thread
-     */
-//    public abstract void inProgress(int progress, Call call, Exception e);
-
-    /**
-     * UI Thread
      *
      * @param resp
      */

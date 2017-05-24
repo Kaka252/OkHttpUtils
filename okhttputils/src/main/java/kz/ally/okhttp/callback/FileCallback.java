@@ -14,6 +14,8 @@ import okio.Okio;
  */
 public abstract class FileCallback extends AbsCallback<File> {
 
+    private static final String TAG = "FileCallback";
+
     private String dir;
     private String fileName;
 
@@ -63,16 +65,15 @@ public abstract class FileCallback extends AbsCallback<File> {
      * @param progress
      * @param total
      */
-    private void updateProgress(final float progress, final long total) {
+    private void updateProgress(final long progress, final long total) {
         MainThread.getInstance().execute(new Runnable() {
             @Override
             public void run() {
-                inProgress(progress * 1.0f / total, total);
+                double percentage = progress * 1.0f / total;
+                inProgress(percentage, total);
             }
         }, 1000);
     }
 
-    protected void inProgress(float progress, long total) {
-
-    }
+    protected abstract void inProgress(double progress, long total);
 }
