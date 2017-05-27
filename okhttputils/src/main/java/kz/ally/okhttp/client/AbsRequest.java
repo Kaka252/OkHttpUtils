@@ -72,6 +72,14 @@ public abstract class AbsRequest<T> {
 
     public abstract RequestMethod getMethod();
 
+    /**
+     * Client的类型，默认是普通
+     * @return
+     */
+    public ClientType getClientType() {
+        return ClientType.NORMAL;
+    }
+
     public Params getParams() {
         Params params = new Params();
         Field[] fields = getClass().getDeclaredFields();
@@ -126,7 +134,15 @@ public abstract class AbsRequest<T> {
      * 取消请求
      */
     public void cancel() {
-        OkHttpClient client = OkHttpSdk.getInstance().getClientDefault();
+        OkHttpClient client;
+        ClientType type = getClientType();
+        if (type == ClientType.UPLOAD_DOWNLOAD) {
+            client = OkHttpSdk.getInstance().getClientDownload();
+        } else if (type == ClientType.IMAGE_LOADER) {
+            client = OkHttpSdk.getInstance().getClientFrescoImageLoader();
+        } else {
+            client = OkHttpSdk.getInstance().getClientDefault();
+        }
         for (Call call : client.dispatcher().queuedCalls()) {
             if (call == null || call.request() == null) continue;
             if (tag.equals(call.request().tag())) {
@@ -139,26 +155,5 @@ public abstract class AbsRequest<T> {
                 call.cancel();
             }
         }
-    }
-
-    public void cancelDownload() {
-        OkHttpClient client = OkHttpSdk.getInstance().getClientDownload();
-        for (Call call : client.dispatcher().queuedCalls()) {
-            if (call == null || call.request() == null) continue;
-            if (tag.equals(call.request().tag())) {
-                call.cancel();
-            }
-        }
-        for (Call call : client.dispatcher().runningCalls()) {
-            if (call == null || call.request() == null) continue;
-            if (call.request().tag().equals(tag)) {
-                call.cancel();
-            }
-        }
-    }
-
-    public void cancelAll() {
-        cancel();
-        cancelDownload();
     }
 }

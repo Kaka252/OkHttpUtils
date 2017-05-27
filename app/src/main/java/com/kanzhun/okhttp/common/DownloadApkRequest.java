@@ -4,6 +4,7 @@ import java.io.File;
 
 import kz.ally.okhttp.callback.AbsCallback;
 import kz.ally.okhttp.client.AbsRequest;
+import kz.ally.okhttp.client.ClientType;
 import kz.ally.okhttp.client.RequestMethod;
 
 /**
@@ -32,5 +33,10 @@ public class DownloadApkRequest extends AbsRequest<File> {
             tag = DownloadApkRequest.this.getClass();
         }
         return tag;
+    }
+
+    @Override
+    public ClientType getClientType() {
+        return ClientType.UPLOAD_DOWNLOAD;
     }
 }

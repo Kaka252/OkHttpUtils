@@ -107,6 +107,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         if (getMusicListRequest != null) getMusicListRequest.cancel();
-        if (downloadApkRequest != null) downloadApkRequest.cancelDownload();
+        if (downloadApkRequest != null) downloadApkRequest.cancel();
     }
 }
