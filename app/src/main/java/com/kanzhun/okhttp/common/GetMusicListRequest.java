@@ -22,12 +22,7 @@ public class GetMusicListRequest extends AbsRequest {
     public int count;
 
     public GetMusicListRequest(AbsCallback<GetMusicListResponse> mCallback) {
-        this(mCallback, GetMusicListRequest.class.getClass());
-    }
-
-    public GetMusicListRequest(AbsCallback<GetMusicListResponse> mCallback, Object tag) {
         super(mCallback);
-        this.tag = tag;
     }
 
     @Override
@@ -41,7 +36,10 @@ public class GetMusicListRequest extends AbsRequest {
     }
 
     @Override
-    public Object getRequestTag() {
+    public Object getTag() {
+        if (tag == null) {
+            tag = GetMusicListRequest.this.getClass();
+        }
         return tag;
     }
 }

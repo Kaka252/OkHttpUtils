@@ -5,11 +5,13 @@ import com.google.gson.annotations.Expose;
 import java.io.IOException;
 import java.lang.reflect.Field;
 
+import kz.ally.okhttp.OkHttpSdk;
 import kz.ally.okhttp.callback.AbsCallback;
 import kz.ally.okhttp.callback.MainThread;
 import kz.ally.okhttp.config.Params;
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.OkHttpClient;
 import okhttp3.Response;
 
 /**
@@ -26,8 +28,6 @@ public abstract class AbsRequest<T> {
     }
 
     private AbsCallback<T> mCallback;
-
-    public Object tag;
 
     public Callback getRawResponseCallback() {
         return new Callback() {
@@ -58,11 +58,19 @@ public abstract class AbsRequest<T> {
         };
     }
 
+    public Object tag;
+
+    public void setTag(Object tag) {
+        this.tag = tag;
+    }
+
+    public Object getTag() {
+        return tag;
+    }
+
     public abstract String getUrl();
 
     public abstract RequestMethod getMethod();
-
-    public abstract Object getRequestTag();
 
     public Params getParams() {
         Params params = new Params();
@@ -112,5 +120,45 @@ public abstract class AbsRequest<T> {
                 callback.onResponse(result);
             }
         });
+    }
+
+    /**
+     * 取消请求
+     */
+    public void cancel() {
+        OkHttpClient client = OkHttpSdk.getInstance().getClientDefault();
+        for (Call call : client.dispatcher().queuedCalls()) {
+            if (call == null || call.request() == null) continue;
+            if (tag.equals(call.request().tag())) {
+                call.cancel();
+            }
+        }
+        for (Call call : client.dispatcher().runningCalls()) {
+            if (call == null || call.request() == null) continue;
+            if (call.request().tag().equals(tag)) {
+                call.cancel();
+            }
+        }
+    }
+
+    public void cancelDownload() {
+        OkHttpClient client = OkHttpSdk.getInstance().getClientDownload();
+        for (Call call : client.dispatcher().queuedCalls()) {
+            if (call == null || call.request() == null) continue;
+            if (tag.equals(call.request().tag())) {
+                call.cancel();
+            }
+        }
+        for (Call call : client.dispatcher().runningCalls()) {
+            if (call == null || call.request() == null) continue;
+            if (call.request().tag().equals(tag)) {
+                call.cancel();
+            }
+        }
+    }
+
+    public void cancelAll() {
+        cancel();
+        cancelDownload();
     }
 }

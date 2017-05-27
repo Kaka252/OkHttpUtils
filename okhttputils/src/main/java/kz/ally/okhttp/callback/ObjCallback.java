@@ -27,6 +27,7 @@ public abstract class ObjCallback<T extends AbsResponse> extends AbsCallback<T> 
         Type[] type = parameterizedType.getActualTypeArguments();
         Class<T> clazz = (Class<T>) type[0];
         T t = GsonMapper.getInstance().getGson().fromJson(result, clazz);
+//        if(t.isSuccess())
         return t;
     }
 }

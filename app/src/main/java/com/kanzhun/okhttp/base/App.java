@@ -3,6 +3,8 @@ package com.kanzhun.okhttp.base;
 import android.app.Application;
 import android.content.Context;
 
+import com.facebook.imagepipeline.backends.okhttp3.OkHttpImagePipelineConfigFactory;
+import com.facebook.imagepipeline.core.ImagePipelineConfig;
 import com.facebook.stetho.Stetho;
 
 import javax.net.ssl.SSLSocketFactory;
@@ -10,7 +12,9 @@ import javax.net.ssl.X509TrustManager;
 
 import kz.ally.okhttp.OkHttpSdk;
 import kz.ally.okhttp.config.HttpConfig;
+import kz.ally.okhttp.interceptors.LogInterceptor;
 import okhttp3.Cache;
+import okhttp3.OkHttpClient;
 
 /**
  * 作者：ZhouYou
@@ -32,6 +36,7 @@ public class App extends Application {
                         .enableWebKitInspector(Stetho.defaultInspectorModulesProvider(getApplicationContext()))
                         .build());
         initOkHttpConfig(this);
+        initOkHttpFrescoIntegrationConfig(this);
     }
 
     public static App get() {
@@ -49,10 +54,18 @@ public class App extends Application {
         SSLSocketFactory sslSocketFactory = HttpConfig.initInsecureSslSocketFactory(trustManager);
         HttpConfig config = new HttpConfig()
                 .cache(cache)
+                .defaultInterceptor(new LogInterceptor())
                 .socketFactory(sslSocketFactory, trustManager)
                 .connTimeout(15000)
                 .readTimeout(20000)
                 .writeTimeout(20000);
-        OkHttpSdk.initConfig(config);
+        OkHttpSdk.initialize(config);
+    }
+
+    private void initOkHttpFrescoIntegrationConfig(Context context) {
+        OkHttpClient client = OkHttpSdk.getInstance().getClientFrescoImageLoader();
+        ImagePipelineConfig config = OkHttpImagePipelineConfigFactory.newBuilder(context, client)
+                .build();
+        // Init Fresco
     }
 }

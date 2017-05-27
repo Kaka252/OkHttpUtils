@@ -27,7 +27,7 @@ public class ApiRequestCall {
     }
 
     void async(Callback response) {
-        OkHttpClient client = OkHttpSdk.getInstance().getClient();
+        OkHttpClient client = OkHttpSdk.getInstance().getClientDefault();
         request = setupRequest();
         call = client.newCall(request);
         call.enqueue(response);

@@ -29,6 +29,9 @@ public class MainActivity extends AppCompatActivity {
     private Button btnDownload;
     private TextView tvDownloadPercentage;
 
+    public GetMusicListRequest getMusicListRequest;
+    public DownloadApkRequest downloadApkRequest;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void get() {
-        GetMusicListRequest request = new GetMusicListRequest(new ObjCallback<GetMusicListResponse>() {
+        getMusicListRequest = new GetMusicListRequest(new ObjCallback<GetMusicListResponse>() {
             @Override
             public void onError(Call call, Exception e) {
 
@@ -61,17 +64,18 @@ public class MainActivity extends AppCompatActivity {
                     Log.d(TAG, resp.toString());
                 }
             }
-        }, this);
-        request.q = "银魂";
-        request.start = 0;
-        request.count = 1;
-        OkHttpSdk.getInstance().executeRequest(request);
+        });
+        getMusicListRequest.q = "银魂";
+        getMusicListRequest.start = 0;
+        getMusicListRequest.count = 1;
+        getMusicListRequest.setTag(this);
+        OkHttpSdk.getInstance().executeRequest(getMusicListRequest);
     }
 
     private void downloadFile() {
         String dir = Environment.getExternalStorageDirectory().getAbsolutePath();
         String name = "高德地图.apk";
-        DownloadApkRequest request = new DownloadApkRequest(new FileCallback(dir, name) {
+        downloadApkRequest = new DownloadApkRequest(new FileCallback(dir, name) {
 
             @Override
             public void onStart() {
@@ -95,12 +99,14 @@ public class MainActivity extends AppCompatActivity {
                 Log.d(TAG, "下载完成");
             }
         });
-        OkHttpSdk.getInstance().executeDownload(request);
+        downloadApkRequest.setTag(this);
+        OkHttpSdk.getInstance().executeDownload(downloadApkRequest);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        OkHttpSdk.getInstance().cancelDefaultTag();
+        if (getMusicListRequest != null) getMusicListRequest.cancel();
+        if (downloadApkRequest != null) downloadApkRequest.cancelDownload();
     }
 }
