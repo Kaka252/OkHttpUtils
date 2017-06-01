@@ -26,18 +26,26 @@ public class ApiRequestCall {
         return baseRequest.setupRequest();
     }
 
-    void async(Callback response) {
+    /**
+     * 普通请求
+     * @param callback
+     */
+    void async(Callback callback) {
         OkHttpClient client = OkHttpSdk.getInstance().getClientDefault();
         request = setupRequest();
         call = client.newCall(request);
-        call.enqueue(response);
+        call.enqueue(callback);
     }
 
-    void download(Callback response) {
-        OkHttpClient client = OkHttpSdk.getInstance().getClientDownload();
+    /**
+     * 上传/下载
+     * @param callback
+     */
+    void xLoad(Callback callback) {
+        OkHttpClient client = OkHttpSdk.getInstance().getClientUploadOrDownload();
         request = setupRequest();
         call = client.newCall(request);
-        call.enqueue(response);
+        call.enqueue(callback);
     }
 
     public Request getRequest() {

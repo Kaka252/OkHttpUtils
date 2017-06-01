@@ -9,6 +9,7 @@ import kz.ally.okhttp.OkHttpSdk;
 import kz.ally.okhttp.callback.AbsCallback;
 import kz.ally.okhttp.callback.MainThread;
 import kz.ally.okhttp.config.Params;
+import kz.ally.okhttp.error.AbsError;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.OkHttpClient;
@@ -74,6 +75,7 @@ public abstract class AbsRequest<T> {
 
     /**
      * Client的类型，默认是普通
+     *
      * @return
      */
     public ClientType getClientType() {
@@ -134,10 +136,10 @@ public abstract class AbsRequest<T> {
      * 取消请求
      */
     public void cancel() {
-        OkHttpClient client;
         ClientType type = getClientType();
+        OkHttpClient client;
         if (type == ClientType.UPLOAD_DOWNLOAD) {
-            client = OkHttpSdk.getInstance().getClientDownload();
+            client = OkHttpSdk.getInstance().getClientUploadOrDownload();
         } else if (type == ClientType.IMAGE_LOADER) {
             client = OkHttpSdk.getInstance().getClientFrescoImageLoader();
         } else {

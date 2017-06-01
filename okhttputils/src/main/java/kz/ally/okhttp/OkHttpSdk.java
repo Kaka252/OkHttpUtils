@@ -27,15 +27,19 @@ public class OkHttpSdk {
     }
 
     private static volatile OkHttpClient clientDefault; // 普通请求
-    private static volatile OkHttpClient clientDownload; // 用来做下载
+    private static volatile OkHttpClient clientUploadOrDownload; // 用来做下载
     private static volatile OkHttpClient clientFrescoImageLoader; // fresco图片
 
     private OkHttpSdk() {
     }
 
+    public static void initialize() {
+        initialize(null);
+    }
+
     public static void initialize(HttpConfig config) {
         clientDefault = initConfig(config);
-        clientDownload = initConfig(config);
+        clientUploadOrDownload = initConfig(config);
         clientFrescoImageLoader = initConfig(config);
     }
 
@@ -51,11 +55,11 @@ public class OkHttpSdk {
         return clientDefault;
     }
 
-    public OkHttpClient getClientDownload() {
-        if (clientDownload == null) {
+    public OkHttpClient getClientUploadOrDownload() {
+        if (clientUploadOrDownload == null) {
             throw new NullPointerException("OkHttp has not been initialized yet.");
         }
-        return clientDownload;
+        return clientUploadOrDownload;
     }
 
     public OkHttpClient getClientFrescoImageLoader() {
@@ -125,6 +129,23 @@ public class OkHttpSdk {
                 .addParams(params)
                 .tag(request.getTag())
                 .build()
-                .download(request.getRawResponseCallback());
+                .xLoad(request.getRawResponseCallback());
+    }
+
+    /**
+     * 执行上传操作
+     *
+     * @param request
+     * @param <T>
+     */
+    public <T extends AbsResponse> void executeUpload(AbsRequest<T> request) {
+        String url = request.getUrl();
+        Params params = request.getParams();
+        new PostRequestBuilder()
+                .url(url)
+                .addParams(params)
+                .tag(request.getTag())
+                .build()
+                .xLoad(request.getRawResponseCallback());
     }
 }

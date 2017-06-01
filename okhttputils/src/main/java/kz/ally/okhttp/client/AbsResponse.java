@@ -6,13 +6,13 @@ package kz.ally.okhttp.client;
  */
 public abstract class AbsResponse {
 
-//    public long code;
-//
-//    public String message;
-//
-//    public boolean isSuccess() {
-//        return code == 0;
-//    }
+    public long code;
+
+    public String message;
+
+    public boolean isSuccess() {
+        return code == 0;
+    }
 
 
 }
