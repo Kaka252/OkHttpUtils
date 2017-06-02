@@ -2,18 +2,15 @@ package kz.ally.okhttp.client;
 
 import com.google.gson.annotations.Expose;
 
-import java.io.IOException;
 import java.lang.reflect.Field;
 
+import kz.ally.okhttp.ApiResponseCallback;
 import kz.ally.okhttp.OkHttpSdk;
 import kz.ally.okhttp.callback.AbsCallback;
-import kz.ally.okhttp.callback.MainThread;
 import kz.ally.okhttp.config.Params;
-import kz.ally.okhttp.error.AbsError;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.OkHttpClient;
-import okhttp3.Response;
 
 /**
  * Author: ZhouYou
@@ -31,32 +28,7 @@ public abstract class AbsRequest<T> {
     private AbsCallback<T> mCallback;
 
     public Callback getRawResponseCallback() {
-        return new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                errorCallback(mCallback, call, e);
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                if (mCallback != null) {
-                    try {
-                        if (response.isSuccessful()) {
-                            T result = mCallback.parseResponse(response);
-                            parseCallback(mCallback, result);
-                        } else {
-                            errorCallback(mCallback, call, null);
-                        }
-                    } catch (Exception e) {
-                        errorCallback(mCallback, call, e);
-                    } finally {
-                        if (response.body() != null) {
-                            response.body().close();
-                        }
-                    }
-                }
-            }
-        };
+        return new ApiResponseCallback<>(mCallback);
     }
 
     public Object tag;
@@ -95,41 +67,6 @@ public abstract class AbsRequest<T> {
             }
         }
         return params;
-    }
-
-    /**
-     * 请求失败后回调
-     *
-     * @param callback
-     * @param call
-     * @param e
-     */
-    private void errorCallback(final AbsCallback<T> callback, final Call call, final Exception e) {
-        MainThread.getInstance().execute(new Runnable() {
-            @Override
-            public void run() {
-                if (call.isCanceled()) {
-                    callback.onError(call, null);
-                } else {
-                    callback.onError(call, e);
-                }
-            }
-        });
-    }
-
-    /**
-     * 请求成功后回调
-     *
-     * @param callback
-     * @param result
-     */
-    private void parseCallback(final AbsCallback<T> callback, final T result) {
-        MainThread.getInstance().execute(new Runnable() {
-            @Override
-            public void run() {
-                callback.onResponse(result);
-            }
-        });
     }
 
     /**

@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.kanzhun.okhttp.common.DownloadApkRequest;
 import com.kanzhun.okhttp.common.GetMusicListRequest;
@@ -19,7 +20,7 @@ import java.io.File;
 import kz.ally.okhttp.OkHttpSdk;
 import kz.ally.okhttp.callback.FileCallback;
 import kz.ally.okhttp.callback.ObjCallback;
-import okhttp3.Call;
+import kz.ally.okhttp.error.ErrorReason;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -54,10 +55,12 @@ public class MainActivity extends AppCompatActivity {
 
     private void get() {
         getMusicListRequest = new GetMusicListRequest(new ObjCallback<GetMusicListResponse>() {
-            @Override
-            public void onError(Call call, Exception e) {
 
+            @Override
+            public void onFailed(ErrorReason reason) {
+                Toast.makeText(getApplicationContext(), reason.getReason(), Toast.LENGTH_SHORT).show();
             }
+
             @Override
             public void onResponse(GetMusicListResponse resp) {
                 if (resp != null) {
@@ -90,8 +93,8 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onError(Call call, Exception e) {
-
+            public void onFailed(ErrorReason reason) {
+                Toast.makeText(getApplicationContext(), reason.getReason(), Toast.LENGTH_SHORT).show();
             }
 
             @Override

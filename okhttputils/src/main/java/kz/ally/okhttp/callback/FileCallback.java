@@ -3,6 +3,7 @@ package kz.ally.okhttp.callback;
 import java.io.File;
 import java.io.IOException;
 
+import kz.ally.okhttp.error.DownloadError;
 import okhttp3.Response;
 import okio.BufferedSink;
 import okio.BufferedSource;
@@ -25,11 +26,11 @@ public abstract class FileCallback extends AbsCallback<File> {
     }
 
     @Override
-    public File parseResponse(Response resp) throws IOException {
+    public File parseResponse(Response resp) throws IOException, DownloadError {
         return downloadFile(resp);
     }
 
-    private File downloadFile(Response resp) {
+    private File downloadFile(Response resp) throws DownloadError {
         BufferedSink sink;
         BufferedSource source;
         File file = null;
@@ -50,7 +51,7 @@ public abstract class FileCallback extends AbsCallback<File> {
             sink.close();
             source.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new DownloadError(e);
         } finally {
             if (resp.body() != null) {
                 resp.body().close();

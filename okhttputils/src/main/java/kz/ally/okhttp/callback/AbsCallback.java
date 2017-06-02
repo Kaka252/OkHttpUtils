@@ -2,7 +2,8 @@ package kz.ally.okhttp.callback;
 
 import java.io.IOException;
 
-import okhttp3.Call;
+import kz.ally.okhttp.error.AbsError;
+import kz.ally.okhttp.error.ErrorReason;
 import okhttp3.Response;
 
 /**
@@ -21,10 +22,9 @@ public abstract class AbsCallback<T> {
     /**
      * UI Thread
      *
-     * @param call
-     * @param e
+     * @param reason
      */
-    public abstract void onError(Call call, Exception e);
+    public abstract void onFailed(ErrorReason reason);
 
     /**
      * Child Thread
@@ -33,7 +33,7 @@ public abstract class AbsCallback<T> {
      * @return
      * @throws IOException
      */
-    public abstract T parseResponse(Response resp) throws IOException;
+    public abstract T parseResponse(Response resp) throws IOException, AbsError;
 
     /**
      * UI Thread
@@ -41,4 +41,11 @@ public abstract class AbsCallback<T> {
      * @param resp
      */
     public abstract void onResponse(T resp);
+
+    /**
+     * 登录异常
+     */
+    public void onLoginError() {
+
+    }
 }

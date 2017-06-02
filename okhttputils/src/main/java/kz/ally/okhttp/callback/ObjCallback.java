@@ -5,6 +5,7 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
 import kz.ally.okhttp.client.AbsResponse;
+import kz.ally.okhttp.error.AbsError;
 import kz.ally.okhttp.gson.GsonMapper;
 import okhttp3.Response;
 
@@ -21,11 +22,18 @@ public abstract class ObjCallback<T extends AbsResponse> extends AbsCallback<T> 
      * @return
      * @throws IOException
      */
-    public T parseResponse(Response resp) throws IOException {
+    public T parseResponse(Response resp) throws IOException, AbsError {
         String result = resp.body().string();
         ParameterizedType parameterizedType = (ParameterizedType) getClass().getGenericSuperclass();
         Type[] type = parameterizedType.getActualTypeArguments();
         Class<T> clazz = (Class<T>) type[0];
-        return GsonMapper.getInstance().getGson().fromJson(result, clazz);
+        T t = GsonMapper.getInstance().getGson().fromJson(result, clazz);
+        if (t.isSuccess()) {
+            return t;
+        }
+
+        else {
+            throw new AbsError(t.message);
+        }
     }
 }

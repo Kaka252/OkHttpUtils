@@ -13,6 +13,4 @@ public abstract class AbsResponse {
     public boolean isSuccess() {
         return code == 0;
     }
-
-
 }
