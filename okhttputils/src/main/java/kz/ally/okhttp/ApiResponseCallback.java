@@ -132,7 +132,7 @@ public class ApiResponseCallback<T> implements Callback {
      * 登录错误
      * @param callback
      */
-    public void errorLogin(final AbsCallback<T> callback) {
+    private void errorLogin(final AbsCallback<T> callback) {
         MainThread.getInstance().execute(new Runnable() {
             @Override
             public void run() {

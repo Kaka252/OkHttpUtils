@@ -3,9 +3,17 @@ package com.kanzhun.okhttp.base;
 import android.text.TextUtils;
 import android.widget.Toast;
 
+import java.io.IOException;
+import java.util.Set;
+
 import kz.ally.okhttp.callback.ObjCallback;
 import kz.ally.okhttp.client.AbsResponse;
+import kz.ally.okhttp.error.AbsError;
 import kz.ally.okhttp.error.ErrorReason;
+import kz.ally.okhttp.error.LoginError;
+import kz.ally.okhttp.error.ParseError;
+import okhttp3.Headers;
+import okhttp3.Response;
 
 /**
  * Author: ZhouYou
@@ -14,8 +22,21 @@ import kz.ally.okhttp.error.ErrorReason;
 public abstract class ApiObjectCallback<T extends AbsResponse> extends ObjCallback<T> {
 
     @Override
+    public T parseResponse(Response resp) throws IOException, AbsError {
+        T t = super.parseResponse(resp);
+        if (t == null) throw new ParseError();
+        if (!t.isSuccess()) {
+            if (t.isTokenExpired()) {
+                throw new LoginError();
+            }
+        }
+        return t;
+    }
+
+    @Override
     public void onResponse(T resp) {
         int code = resp.code;
+        // 处理请求成功的业务
         if (code == 0) {
             onComplete(resp);
         }
@@ -72,6 +93,21 @@ public abstract class ApiObjectCallback<T extends AbsResponse> extends ObjCallba
     @Override
     public void onLoginError() {
         super.onLoginError();
-        // 发送广播Token过期
+        // Todo 发送广播Token过期
     }
+
+    private boolean isDecrypt(Headers headers) {
+        boolean isDecrypt = false;
+        Set<String> keys = headers.names();
+        for (String key : keys) {
+            if (TextUtils.isEmpty(key)) continue;
+            if (key.equals(HEADER_ENCRYPT_KEY)) {
+                isDecrypt = TextUtils.equals(headers.get(key), "yes");
+            }
+        }
+        return isDecrypt;
+    }
+
+    private static final String HEADER_ENCRYPT_KEY = "content-encrypt";
+
 }
