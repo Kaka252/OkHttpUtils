@@ -13,4 +13,8 @@ public abstract class AbsResponse {
     public boolean isSuccess() {
         return code == 0;
     }
+
+    public boolean isTokenExpired() {
+        return code == 7;
+    }
 }

@@ -12,6 +12,7 @@ import kz.ally.okhttp.error.DownloadError;
 import kz.ally.okhttp.error.ErrorReason;
 import kz.ally.okhttp.error.LoginError;
 import kz.ally.okhttp.error.NetworkError;
+import kz.ally.okhttp.error.ParseError;
 import kz.ally.okhttp.error.ServerError;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -66,52 +67,63 @@ public class ApiResponseCallback<T> implements Callback {
      * @param error
      */
     private void errorCallback(final AbsCallback<T> callback, final AbsError error) {
-        final ErrorReason reason;
-        Throwable t = null;
-        if (error == null) {
-            reason = ErrorReason.OTHER;
-        } else if (error instanceof NetworkError
-                || error instanceof ServerError) {
-            reason = ErrorReason.NET_ERROR;
-            t = error.getCause();
-            if (t == null) {
-                String msg = ErrorReason.NET_ERROR.getReason();
-                Response response = error.response;
-                if (response != null) {
-                    msg += " | error code: " + response.code();
-                }
-                t = new ConnectException(msg);
-            }
-        } else if (error instanceof DownloadError) {
-            reason = ErrorReason.DOWNLOAD_ERROR;
-            t = error.getCause();
-            if (t == null) {
-                String msg = ErrorReason.OTHER.getReason();
-                Response response = error.response;
-                if (response != null) {
-                    msg += " | error code: " + response.code();
-                }
-                t = new JSONException(msg);
-            }
-        } else if (error instanceof LoginError) {
-            errorLogin(callback);
-            return;
-        } else {
-            reason = ErrorReason.OTHER;
-            t = error.getCause();
-            if (t == null) {
-                String msg = ErrorReason.OTHER.getReason();
-                Response response = error.response;
-                if (response != null) {
-                    msg += " | error code: " + response.code();
-                }
-                t = new Exception(msg);
-            }
-        }
         MainThread.getInstance().execute(new Runnable() {
             @Override
             public void run() {
-                callback.onFailed(reason);
+                ErrorReason reason;
+                Throwable t = null;
+                if (error == null) {
+                    reason = ErrorReason.OTHER;
+                } else if (error instanceof NetworkError
+                        || error instanceof ServerError) {
+                    reason = ErrorReason.NET_ERROR;
+                    t = error.getCause();
+                    if (t == null) {
+                        String msg = ErrorReason.NET_ERROR.getReason();
+                        Response response = error.response;
+                        if (response != null) {
+                            msg += " | error code: " + response.code();
+                        }
+                        t = new ConnectException(msg);
+                    }
+                } else if (error instanceof DownloadError) {
+                    reason = ErrorReason.DOWNLOAD_ERROR;
+                    t = error.getCause();
+                    if (t == null) {
+                        String msg = ErrorReason.OTHER.getReason();
+                        Response response = error.response;
+                        if (response != null) {
+                            msg += " | error code: " + response.code();
+                        }
+                        t = new JSONException(msg);
+                    }
+                } else if (error instanceof ParseError) {
+                    reason = ErrorReason.JSON_ERROR;
+                    t = error.getCause();
+                    if (t == null) {
+                        String msg = ErrorReason.JSON_ERROR.getReason();
+                        Response response = error.response;
+                        if (response != null) {
+                            msg += "| error code: " + response.code();
+                        }
+                        t = new Exception(msg);
+                    }
+                } else if (error instanceof LoginError) {
+                    errorLogin(callback);
+                    return;
+                } else {
+                    reason = ErrorReason.OTHER;
+                    t = error.getCause();
+                    if (t == null) {
+                        String msg = ErrorReason.OTHER.getReason();
+                        Response response = error.response;
+                        if (response != null) {
+                            msg += " | error code: " + response.code();
+                        }
+                        t = new Exception(msg);
+                    }
+                }
+                callback.onFailed(reason, t);
             }
         });
     }

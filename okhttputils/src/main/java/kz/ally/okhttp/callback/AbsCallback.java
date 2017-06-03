@@ -24,7 +24,7 @@ public abstract class AbsCallback<T> {
      *
      * @param reason
      */
-    public abstract void onFailed(ErrorReason reason);
+    public abstract void onFailed(ErrorReason reason, Throwable t);
 
     /**
      * Child Thread

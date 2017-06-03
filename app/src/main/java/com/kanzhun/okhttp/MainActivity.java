@@ -11,6 +11,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.kanzhun.okhttp.base.ApiFileCallback;
+import com.kanzhun.okhttp.base.ApiObjectCallback;
 import com.kanzhun.okhttp.common.DownloadApkRequest;
 import com.kanzhun.okhttp.common.GetMusicListRequest;
 import com.kanzhun.okhttp.common.GetMusicListResponse;
@@ -18,8 +20,6 @@ import com.kanzhun.okhttp.common.GetMusicListResponse;
 import java.io.File;
 
 import kz.ally.okhttp.OkHttpSdk;
-import kz.ally.okhttp.callback.FileCallback;
-import kz.ally.okhttp.callback.ObjCallback;
 import kz.ally.okhttp.error.ErrorReason;
 
 public class MainActivity extends AppCompatActivity {
@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void get() {
-        getMusicListRequest = new GetMusicListRequest(new ObjCallback<GetMusicListResponse>() {
+        getMusicListRequest = new GetMusicListRequest(new ApiObjectCallback<GetMusicListResponse>() {
 
             @Override
             public void onFailed(ErrorReason reason) {
@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
     private void downloadFile() {
         String dir = Environment.getExternalStorageDirectory().getAbsolutePath();
         String name = "高德地图.apk";
-        downloadApkRequest = new DownloadApkRequest(new FileCallback(dir, name) {
+        downloadApkRequest = new DownloadApkRequest(new ApiFileCallback(dir, name) {
 
             @Override
             public void onStart() {

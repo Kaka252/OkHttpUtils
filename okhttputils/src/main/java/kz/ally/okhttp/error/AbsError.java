@@ -32,8 +32,4 @@ public class AbsError extends Exception {
         super(cause);
         response = null;
     }
-
-    public long errorCode;
-
-    public String errorMessage;
 }
