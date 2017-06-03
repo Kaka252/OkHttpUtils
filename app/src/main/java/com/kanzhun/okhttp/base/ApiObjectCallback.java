@@ -3,17 +3,12 @@ package com.kanzhun.okhttp.base;
 import android.text.TextUtils;
 import android.widget.Toast;
 
-import java.io.IOException;
 import java.util.Set;
 
 import kz.ally.okhttp.callback.ObjCallback;
 import kz.ally.okhttp.client.AbsResponse;
-import kz.ally.okhttp.error.AbsError;
 import kz.ally.okhttp.error.ErrorReason;
-import kz.ally.okhttp.error.LoginError;
-import kz.ally.okhttp.error.ParseError;
 import okhttp3.Headers;
-import okhttp3.Response;
 
 /**
  * Author: ZhouYou
@@ -22,43 +17,25 @@ import okhttp3.Response;
 public abstract class ApiObjectCallback<T extends AbsResponse> extends ObjCallback<T> {
 
     @Override
-    public T parseResponse(Response resp) throws IOException, AbsError {
-        T t = super.parseResponse(resp);
-        if (t == null) throw new ParseError();
-        if (!t.isSuccess()) {
-            if (t.isTokenExpired()) {
-                throw new LoginError();
-            }
-        }
-        return t;
-    }
-
-    @Override
     public void onResponse(T resp) {
-        int code = resp.code;
         // 处理请求成功的业务
-        if (code == 0) {
+        if (resp.isSuccess()) {
             onComplete(resp);
         }
         // 服务端定义的公共异常
-        else if (code > 0 && code <= 1000) {
+        else if (resp.isServerCommonError()) {
             String msg = resp.message;
-            if (code == 5) {
+            if (resp.isValidationOverTimes()) {
                 msg = "每天每个手机号码只允许验证5次";
-                Toast.makeText(App.get().getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
             }
             if (TextUtils.isEmpty(msg)) {
-                msg = "服务器异常：" + code;
+                msg = "服务器异常：" + resp.code;
             }
             Toast.makeText(App.get().getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
         }
         // 服务端定义的业务异常
-        else if (code > 1000) {
-            onHandleBusinessError(resp);
-        }
-        // 错误
         else {
-            Toast.makeText(App.get().getApplicationContext(), "code < 0, 请求失败", Toast.LENGTH_SHORT).show();
+            onHandleBusinessError(resp);
         }
     }
 
