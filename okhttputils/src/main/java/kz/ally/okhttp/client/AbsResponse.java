@@ -6,7 +6,7 @@ package kz.ally.okhttp.client;
  */
 public abstract class AbsResponse {
 
-    public long code;
+    public int code;
 
     public String message;
 

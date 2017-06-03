@@ -11,7 +11,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.kanzhun.okhttp.base.ApiFileCallback;
+import com.kanzhun.okhttp.base.ApiDownloadCallback;
 import com.kanzhun.okhttp.base.ApiObjectCallback;
 import com.kanzhun.okhttp.common.DownloadApkRequest;
 import com.kanzhun.okhttp.common.GetMusicListRequest;
@@ -57,15 +57,15 @@ public class MainActivity extends AppCompatActivity {
         getMusicListRequest = new GetMusicListRequest(new ApiObjectCallback<GetMusicListResponse>() {
 
             @Override
-            public void onFailed(ErrorReason reason) {
-                Toast.makeText(getApplicationContext(), reason.getReason(), Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onResponse(GetMusicListResponse resp) {
+            public void onComplete(GetMusicListResponse resp) {
                 if (resp != null) {
                     Log.d(TAG, resp.toString());
                 }
+            }
+
+            @Override
+            public void onFailed(ErrorReason reason) {
+                Toast.makeText(getApplicationContext(), reason.getReason(), Toast.LENGTH_SHORT).show();
             }
         });
         getMusicListRequest.q = "银魂";
@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
     private void downloadFile() {
         String dir = Environment.getExternalStorageDirectory().getAbsolutePath();
         String name = "高德地图.apk";
-        downloadApkRequest = new DownloadApkRequest(new ApiFileCallback(dir, name) {
+        downloadApkRequest = new DownloadApkRequest(new ApiDownloadCallback(dir, name) {
 
             @Override
             public void onStart() {

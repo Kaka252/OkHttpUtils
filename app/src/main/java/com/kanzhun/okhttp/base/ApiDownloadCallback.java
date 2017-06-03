@@ -9,9 +9,9 @@ import kz.ally.okhttp.error.ErrorReason;
  * Author: ZhouYou
  * Date: 2017/6/3.
  */
-public abstract class ApiFileCallback extends FileCallback {
+public abstract class ApiDownloadCallback extends FileCallback {
 
-    public ApiFileCallback(String dir, String fileName) {
+    public ApiDownloadCallback(String dir, String fileName) {
         super(dir, fileName);
     }
 
