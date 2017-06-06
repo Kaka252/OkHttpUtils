@@ -1,6 +1,6 @@
 package com.kanzhun.okhttp.common;
 
-import com.kanzhun.okhttp.bean.NetMusic;
+import com.kanzhun.okhttp.bean.MusicBean;
 
 import java.util.List;
 
@@ -18,7 +18,7 @@ public class GetMusicListResponse extends AbsResponse {
 
     public int total;
 
-    public List<NetMusic.MusicsBean> musics;
+    public List<MusicBean> musics;
 
     public int getCount() {
         return count;
@@ -32,7 +32,7 @@ public class GetMusicListResponse extends AbsResponse {
         return total;
     }
 
-    public List<NetMusic.MusicsBean> getMusicList() {
+    public List<MusicBean> getMusicList() {
         return musics;
     }
 
@@ -42,7 +42,7 @@ public class GetMusicListResponse extends AbsResponse {
                 "count=" + count +
                 ", start=" + start +
                 ", total=" + total +
-                ", musicList=" + musics.toString() +
+                ", musics=" + musics.toString() +
                 '}';
     }
 }
