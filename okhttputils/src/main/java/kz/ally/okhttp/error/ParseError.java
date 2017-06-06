@@ -5,6 +5,7 @@ import okhttp3.Response;
 /**
  * Author: ZhouYou
  * Date: 2017/6/3.
+ * 数据解析异常
  */
 public class ParseError extends AbsError {
 

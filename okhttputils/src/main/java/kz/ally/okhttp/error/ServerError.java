@@ -5,6 +5,7 @@ import okhttp3.Response;
 /**
  * Author: ZhouYou
  * Date: 2017/6/2.
+ * 服务器异常
  */
 public class ServerError extends AbsError {
 
