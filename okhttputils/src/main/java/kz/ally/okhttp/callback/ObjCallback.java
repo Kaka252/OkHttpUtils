@@ -6,8 +6,6 @@ import java.lang.reflect.Type;
 
 import kz.ally.okhttp.client.AbsResponse;
 import kz.ally.okhttp.error.AbsError;
-import kz.ally.okhttp.error.LoginError;
-import kz.ally.okhttp.error.ParseError;
 import kz.ally.okhttp.gson.GsonMapper;
 import okhttp3.Response;
 
@@ -30,8 +28,8 @@ public abstract class ObjCallback<T extends AbsResponse> extends AbsCallback<T> 
         Type[] type = parameterizedType.getActualTypeArguments();
         Class<T> clazz = (Class<T>) type[0];
         T t = GsonMapper.getInstance().getGson().fromJson(result, clazz);
-        if (t == null || t.code < 0) throw new ParseError();
-        if (t.isTokenExpired()) throw new LoginError();
+//        if (t == null || t.code < 0) throw new ParseError();
+//        if (t.isTokenExpired()) throw new LoginError();
         return t;
     }
 }

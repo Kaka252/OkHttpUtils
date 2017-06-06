@@ -18,7 +18,7 @@ public class GetMusicListResponse extends AbsResponse {
 
     public int total;
 
-    public List<NetMusic.MusicsBean> musicList;
+    public List<NetMusic.MusicsBean> musics;
 
     public int getCount() {
         return count;
@@ -33,7 +33,7 @@ public class GetMusicListResponse extends AbsResponse {
     }
 
     public List<NetMusic.MusicsBean> getMusicList() {
-        return musicList;
+        return musics;
     }
 
     @Override
@@ -42,7 +42,7 @@ public class GetMusicListResponse extends AbsResponse {
                 "count=" + count +
                 ", start=" + start +
                 ", total=" + total +
-                ", musicList=" + musicList +
+                ", musicList=" + musics.toString() +
                 '}';
     }
 }
