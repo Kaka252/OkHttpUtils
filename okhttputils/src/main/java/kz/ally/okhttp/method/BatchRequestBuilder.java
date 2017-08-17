@@ -44,13 +44,6 @@ public class BatchRequestBuilder extends BaseRequestBuilder<BatchRequestBuilder>
         }
     }
 
-    public BatchRequestBuilder addRequest(List<GetRequestBuilder> requestBuilders) {
-        if (requestBuilders != null && !requestBuilders.isEmpty()) {
-            this.requestBuilders.addAll(requestBuilders);
-        }
-        return this;
-    }
-
     public BatchRequestBuilder addRequest(GetRequestBuilder builder) {
         if (builder != null) {
             requestBuilders.add(builder);

@@ -1,8 +1,11 @@
 package kz.ally.okhttp;
 
+import android.content.Context;
+
 import java.io.File;
 import java.util.concurrent.TimeUnit;
 
+import kz.ally.okhttp.chuck.ChuckInterceptor;
 import kz.ally.okhttp.client.AbsRequest;
 import kz.ally.okhttp.client.AbsResponse;
 import kz.ally.okhttp.client.RequestMethod;
@@ -11,6 +14,7 @@ import kz.ally.okhttp.config.Params;
 import kz.ally.okhttp.method.GetRequestBuilder;
 import kz.ally.okhttp.method.PostRequestBuilder;
 import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 
 /**
  * 作者：ZhouYou
@@ -33,14 +37,14 @@ public class OkHttpSdk {
     private OkHttpSdk() {
     }
 
-    public static void initialize() {
-        initialize(null);
+    public static void initialize(Context context) {
+        initialize(context, null);
     }
 
-    public static void initialize(HttpConfig config) {
-        clientDefault = initConfig(config);
-        clientUploadOrDownload = initConfig(config);
-        clientFrescoImageLoader = initConfig(config);
+    public static void initialize(Context context, HttpConfig config) {
+        clientDefault = initConfig(context, config);
+        clientUploadOrDownload = initConfig(context, config);
+        clientFrescoImageLoader = initConfig(context, config);
     }
 
     /**
@@ -69,7 +73,7 @@ public class OkHttpSdk {
         return clientFrescoImageLoader;
     }
 
-    private static OkHttpClient initConfig(HttpConfig config) {
+    private static OkHttpClient initConfig(Context context, HttpConfig config) {
         OkHttpClient client;
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         if (config == null) {
@@ -82,9 +86,8 @@ public class OkHttpSdk {
             if (config.cache != null) {
                 builder.cache(config.cache);
             }
-            if (config.defaultInterceptor != null) {
-                builder.addInterceptor(config.defaultInterceptor);
-            }
+            builder.addInterceptor(new ChuckInterceptor(context));
+            builder.addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY));
             client = builder.build();
         }
         return client;
@@ -147,5 +150,9 @@ public class OkHttpSdk {
                 .tag(request.getTag())
                 .build()
                 .xLoad(request.getRawResponseCallback());
+    }
+
+    public <T extends AbsResponse> void executeBatch(AbsRequest<T> request) {
+
     }
 }

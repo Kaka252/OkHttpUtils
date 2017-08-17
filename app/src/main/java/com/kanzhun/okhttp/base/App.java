@@ -12,7 +12,6 @@ import javax.net.ssl.X509TrustManager;
 
 import kz.ally.okhttp.OkHttpSdk;
 import kz.ally.okhttp.config.HttpConfig;
-import kz.ally.okhttp.interceptors.LogInterceptor;
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
 
@@ -54,12 +53,11 @@ public class App extends Application {
         SSLSocketFactory sslSocketFactory = HttpConfig.initInsecureSslSocketFactory(trustManager);
         HttpConfig config = new HttpConfig()
                 .cache(cache)
-                .defaultInterceptor(new LogInterceptor())
                 .socketFactory(sslSocketFactory, trustManager)
                 .connTimeout(15000)
                 .readTimeout(20000)
                 .writeTimeout(20000);
-        OkHttpSdk.initialize(config);
+        OkHttpSdk.initialize(context, config);
     }
 
     private void initOkHttpFrescoIntegrationConfig(Context context) {

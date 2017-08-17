@@ -12,7 +12,6 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
 import okhttp3.Cache;
-import okhttp3.Interceptor;
 
 /**
  * 作者：ZhouYou
@@ -30,8 +29,6 @@ public class HttpConfig {
     public long writeTimeout = DEFAULT_MILLIS_SECOND;
     public long readTimeout = DEFAULT_MILLIS_SECOND;
     public long connectTimeout = DEFAULT_MILLIS_SECOND;
-
-    public Interceptor defaultInterceptor;
 
     public HttpConfig cache(Cache cache) {
         this.cache = cache;
@@ -56,11 +53,6 @@ public class HttpConfig {
 
     public HttpConfig connTimeout(long connectTimeout) {
         this.connectTimeout = connectTimeout;
-        return this;
-    }
-
-    public HttpConfig defaultInterceptor(Interceptor interceptor) {
-        this.defaultInterceptor = interceptor;
         return this;
     }
 

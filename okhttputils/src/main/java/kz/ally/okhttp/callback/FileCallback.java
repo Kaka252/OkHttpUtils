@@ -31,8 +31,8 @@ public abstract class FileCallback extends AbsCallback<File> {
     }
 
     private File downloadFile(Response resp) throws DownloadError {
-        BufferedSink sink;
-        BufferedSource source;
+        BufferedSink sink = null;
+        BufferedSource source = null;
         File file = null;
         try {
             long total = resp.body().contentLength();
@@ -43,18 +43,24 @@ public abstract class FileCallback extends AbsCallback<File> {
             byte[] buf = new byte[1024];
             int len;
             long progress = 0;
+
             while ((len = source.read(buf)) != -1) {
                 progress += len;
                 sink.write(buf, 0, len);
                 updateProgress(progress, total);
             }
-            sink.close();
-            source.close();
+
         } catch (IOException e) {
             throw new DownloadError(e);
         } finally {
-            if (resp.body() != null) {
-                resp.body().close();
+            try {
+                if (sink != null) sink.close();
+                if (source != null) source.close();
+                if (resp.body() != null) {
+                    resp.body().close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
         return file;
